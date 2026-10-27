@@ -325,6 +325,25 @@ button{font-family:inherit}
 .svlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .svlist li{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px}
 
+
+/* research, reviews, web search */
+.evid{margin:0;padding-top:14px;border-top:1px solid var(--line);font-size:14px;line-height:1.55;color:var(--muted)}
+.evk{display:block;margin-bottom:4px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--green)}
+.evid a{color:var(--blue);font-weight:500;overflow-wrap:anywhere}
+.opt{font-weight:500;font-size:14px;color:var(--muted)}
+.hint{margin:0;color:var(--muted);font-size:15px;line-height:1.5}
+.gdrow{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.rgrid{display:flex;flex-direction:column;gap:14px}
+.rcard{background:var(--wash);border-radius:20px;padding:20px 22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.rcard h3{font-family:'DM Sans',system-ui,sans-serif;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.rcard .rtext{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px;line-height:1.6}
+.rcard .rtext mark{background:var(--paper);border:1.5px dashed var(--blue2);border-radius:8px;padding:0 6px;color:var(--ink)}
+.rfill{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rfill .input{height:52px;font-size:16px}
+.srclist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.srclist li{font-size:15.5px;line-height:1.5;overflow-wrap:anywhere}
+.srclist a{font-weight:700}
+@media (max-width:720px){.rfill{grid-template-columns:1fr}.rcard{padding:18px 18px}}
 </style>
 </head>
 <body>
@@ -362,7 +381,7 @@ button{font-family:inherit}
   </section>
   <section class="steps" aria-labelledby="stepsTitle"><div class="wrap"><h2 id="stepsTitle">Three steps. <em>Two minutes.</em></h2><div class="cols">
     <div><div class="num" aria-hidden="true">1</div><h3>Pick your needs</h3><p>Pick from ideas or type your own.</p></div>
-    <div><div class="num" aria-hidden="true">2</div><h3>Add what you heard</h3><p>Add notes from someone who works there.</p></div>
+    <div><div class="num" aria-hidden="true">2</div><h3>Add what you heard and read</h3><p>Add notes from someone there, plus reviews you copied.</p></div>
     <div><div class="num" aria-hidden="true">3</div><h3>Copy your prompt</h3><p>Paste it into the AI you use.</p></div>
   </div></div></section>
   <section class="band" aria-label="Start"><div class="wrap"><h2>Does it <em>fit</em>? Find out.</h2><a href="#builder" class="btn" data-act="start">Start building</a></div></section>
@@ -400,6 +419,7 @@ button{font-family:inherit}
     <section class="panel" id="p4" aria-labelledby="t4" hidden>
       <div><h1 id="t4" tabindex="-1">What did you <em>hear</em>?</h1><p class="sub">Skip if you have none.</p></div>
       <div class="field"><label class="lab" for="notes">Your notes</label><textarea class="input" id="notes" rows="6" maxlength="4000" placeholder="Like 'Recruiter said it is hybrid.'"></textarea><div><button type="button" class="link" data-act="open-library" data-kind="notes" style="padding-left:0">Need help getting started? See note starters</button></div></div>
+ <div class="field"><label class="lab" for="reviews">Glassdoor reviews <span class="opt">optional</span></label><p class="hint">Open the company on Glassdoor, copy 5 to 10 recent reviews, and paste them here. Include a few good ones and a few bad ones. Glassdoor does not let tools pull reviews for you, so this part is a quick copy and paste.</p><textarea class="input" id="reviews" rows="6" maxlength="12000" placeholder="Paste reviews here"></textarea><div class="gdrow"><a class="link" id="gdLink" href="https://www.glassdoor.com/Reviews/index.htm" target="_blank" rel="noopener noreferrer" style="padding-left:0">Open Glassdoor in a new tab</a></div></div>
       <div class="actions2"><button type="button" class="link" data-act="prev">Back</button><button type="button" class="btn" data-act="next">Make my prompt</button></div>
     </section>
 
@@ -409,6 +429,7 @@ button{font-family:inherit}
         <button type="button" class="tab" role="tab" id="otab-prompt" data-out="prompt" aria-controls="outBody">Prompt</button>
         <button type="button" class="tab" role="tab" id="otab-check" data-out="check" aria-controls="outBody">Needs check<span class="badge" id="gapBadge" hidden></span></button>
         <button type="button" class="tab" role="tab" id="otab-questions" data-out="questions" aria-controls="outBody">Questions</button>
+ <button type="button" class="tab" role="tab" id="otab-research" data-out="research" aria-controls="outBody">Web search</button>
       </div>
       <div id="outBody" role="tabpanel"></div>
       <div class="actions2" id="outActions"></div>
@@ -451,7 +472,14 @@ button{font-family:inherit}
         <p class="mutetext" id="surpriseMsg" aria-live="polite" style="min-height:1.5em"></p>
       </section>
       <div id="catalog"></div>
-      <section class="card" id="starters" aria-labelledby="startersTitle">
+      <section class="card" id="research" aria-labelledby="researchTitle"><h2 id="researchTitle" style="font-size:30px">The research behind these ideas</h2><p class="sub">Groups with a research note lean on what graduates say they want. NACE covers the practical side well. Deloitte covers purpose and values, which NACE does not report on. Groups without a note do not have a survey behind them yet.</p>
+<ul class="srclist">
+<li><a href="https://naceweb.org/about-us/press/2026/beyond-the-paycheck-what-the-class-of-2026-really-wants-from-an-employer" target="_blank" rel="noopener noreferrer">NACE, Beyond the Paycheck: What the Class of 2026 Really Wants from an Employer</a> (June 3, 2026). From the NACE 2026 Student Survey: more than 17,000 students at 258 schools, including more than 1,860 graduating seniors, surveyed March 12 to May 15, 2026.</li>
+<li><a href="https://naceweb.org/talent-acquisition/student-attitudes/opportunity-to-grow-advance-tops-wish-list-for-class-of-2026" target="_blank" rel="noopener noreferrer">NACE, Opportunity to Grow, Advance Tops Wish List for Class of 2026</a> (May 15, 2026). Same survey, with more on what graduating seniors rank highest.</li>
+<li><a href="https://naceweb.org/talent-acquisition/student-attitudes/job-stability-healthy-workplace-culture-top-new-grad-wish-list" target="_blank" rel="noopener noreferrer">NACE, Job Stability, Healthy Workplace Culture Top New Grad Wish List</a> (May 19, 2025). From the NACE 2024 Student Survey: more than 2,900 juniors, surveyed March 13 to May 15, 2024.</li>
+<li><a href="https://www.deloitte.com/content/dam/assets-shared/docs/campaigns/2025/2025-genz-millennial-survey.pdf" target="_blank" rel="noopener noreferrer">Deloitte, 2025 Gen Z and Millennial Survey</a>. 23,482 respondents in 44 countries, surveyed October 25 to December 24, 2024.</li>
+</ul></section>
+ <section class="card" id="starters" aria-labelledby="startersTitle">
         <h2 id="startersTitle" style="font-size:30px">Starters for your notes</h2>
         <p class="sub">Tap one to add it to your notes, then finish the sentence in the builder. Fill in only what you actually heard.</p>
         <div class="chips" id="starterList"></div>
@@ -490,10 +518,15 @@ button{font-family:inherit}
 (function(){
   var KEY1 = 'beyond-the-paycheck-prompt-builder-v1';
   var KEY = 'beyond-the-paycheck-prompt-builder-v2';
-  var NEED_IDEAS = ['Fair pay','Flexible schedule','Manager support','Room to grow','Hybrid or remote options','Clear path to promotion'];
-  var WANT_IDEAS = ['Learning budget','Team events','A mission I believe in','Diverse teams','Mentorship','Volunteer time off','Visible leadership'];
+  var NEED_IDEAS = ['Clear path to promotion','Job stability','Health insurance','Fair pay','Hybrid or remote options','Manager support'];
+  var WANT_IDEAS = ['Mentorship','Friendly coworkers','Learning budget','A mission I believe in','Visible leadership','Volunteer time off','Team events'];
 
-  var QUESTIONS = {
+  var QUESTIONS = { 'annual raises':['How often are raises given, and how big are they usually?','Do people know ahead of time how a raise is decided?'],
+ 'chances to build new skills':['What new skills have you picked up here in the last year?','How does the team make room for learning during a busy week?'],
+ 'friendly coworkers':['How would you describe the people on this team?','What do people do when someone new joins?'],
+ 'healthy workplace culture':['How does the team handle stress and busy stretches?','What would you change about the culture if you could?'],
+ 'affordable cost of living':['What do most people on the team do for housing, and is it affordable on this salary?','Does pay change based on where someone lives?'],
+ 'a welcoming, diverse community':['What is the area like for someone new to it?','Where do people on the team like to live?'],
     'hybrid or remote options':['What does a normal week look like for this team, in the office versus remote?','Has that changed in the last year, and who decides?'],
     'clear path to promotion':['How do people on this team get promoted, and how long does it usually take?','Can you tell me about someone who moved up recently?'],
     'fair pay':['How does the company decide pay for this role, and how often is it reviewed?','Is the pay range shared with candidates before an offer?'],
@@ -555,7 +588,23 @@ button{font-family:inherit}
     {id:'culture', title:'Culture', blurb:'How the place feels day to day.', items:['Friendly culture','Team events','Work friendships','Visible leadership','Recognition for good work','Celebrates wins']},
     {id:'stability', title:'Stability and location', blurb:'Where you will be, and whether it will last.', items:['Job stability','Company is financially healthy','Short commute','Relocation help','Close to family']}
   ];
-  var CAT_Q = {
+  var SRC = {
+  nace26:{t:'NACE 2026 Student Survey', u:'https://naceweb.org/about-us/press/2026/beyond-the-paycheck-what-the-class-of-2026-really-wants-from-an-employer'},
+  nace24:{t:'NACE 2024 Student Survey', u:'https://naceweb.org/talent-acquisition/student-attitudes/job-stability-healthy-workplace-culture-top-new-grad-wish-list'},
+  deloitte:{t:'Deloitte 2025 Gen Z and Millennial Survey', u:'https://www.deloitte.com/content/dam/assets-shared/docs/campaigns/2025/2025-genz-millennial-survey.pdf'}
+};
+var EVID = {
+  pay:[{s:'nace26', n:'Graduating seniors ranked a good benefits package second and a high starting salary fifth among what they want from an employer.'},{s:'nace24', n:'Students also said they expect pay to be transparent and look for annual raises.'}],
+  time:[{s:'nace24', n:'Hybrid is a real split: nearly 43% of students prefer it, and just over half prefer to be on site every day.'}],
+  growth:[{s:'nace26', n:'Opportunity for career growth and advancement was the number one thing graduating seniors want from an employer.'},{s:'nace24', n:'The chance to develop skills made the top five for juniors.'}],
+  people:[{s:'nace26', n:'Friendly coworkers ranked fourth among what graduating seniors want.'},{s:'nace24', n:'Friendly coworkers and a healthy workplace culture both made the top five for juniors.'}],
+  values:[{s:'deloitte', n:'89% of Gen Z say a sense of purpose matters to their job satisfaction and well being, and 41% have rejected a potential employer over their personal ethics or beliefs.'},{s:'deloitte', n:'70% of Gen Z say a company environmental record matters, but only 23% researched it before accepting a job.'}],
+  culture:[{s:'nace24', n:'A healthy workplace culture made the top five for juniors.'}],
+  stability:[{s:'nace26', n:'Job security ranked third among what graduating seniors want from an employer.'},{s:'nace24', n:'Job stability led the 2024 wish list. Cost of living was the biggest worry for students thinking about relocating, and nearly two thirds said a diverse, tolerant community with green space matters.'}]
+};
+var NEWITEMS = {pay:['Annual raises'], growth:['Chances to build new skills'], people:['Friendly coworkers'], culture:['Healthy workplace culture'], stability:['Affordable cost of living','A welcoming, diverse community']};
+CATALOG.forEach(function(c){ (NEWITEMS[c.id] || []).forEach(function(t){ c.items.push(t); }); c.ev = EVID[c.id] || []; });
+var CAT_Q = {
     pay:'What makes the numbers feel fair?',
     time:'What should your week look like?',
     growth:'Where do you want to be in two years?',
@@ -612,13 +661,22 @@ button{font-family:inherit}
     {keys:['stretch','first 90','onboard'], hits:['stretch','onboarding','first 90','ramp']},
     {keys:['expectation'], hits:['expectation','goals','success looks']}
   ];
-  var STOP = ['clear','about','believe','options','something','where','their','there','would','could','other','should','which','these','those','company','culture','people','great','strong','working','place','workplace','always','really','having','being','offer','offers','provide','provides','good','better','teams','environment','people','support','right','budget','benefits','policy','program','programs'];
+  TOPICS.push(
+  {keys:['coworker'], hits:['coworker','teammate','teammates','colleague','welcoming']},
+  {keys:['cost of living','afford'], hits:['cost of living','afford','rent','housing','expensive']},
+  {keys:['raise'], hits:['raise','raises','annual increase','pay increase']},
+  {keys:['skill'], hits:['skill','skills','learn','training']},
+  {keys:['healthy workplace','culture'], hits:['culture','toxic','burnout','supportive','stress']},
+  {keys:['community','welcoming','diverse'], hits:['community','neighborhood','diverse']},
+  {keys:['security'], hits:['job security','secure','layoff','laid off']}
+);
+var STOP = ['clear','about','believe','options','something','where','their','there','would','could','other','should','which','these','those','company','culture','people','great','strong','working','place','workplace','always','really','having','being','offer','offers','provide','provides','good','better','teams','environment','people','support','right','budget','benefits','policy','program','programs'];
 
   var EXAMPLE = {
     company:'Northwind Foods',
     needs:['Hybrid or remote options','Clear path to promotion'],
     wants:['Mentorship','Volunteer time off','Visible leadership'],
-    notes:'Recruiter said the team is hybrid, three days in the office. Managers check in weekly. People mentioned working late during launches.',
+    notes:'Recruiter said the team is hybrid, three days in the office. Managers check in weekly. People mentioned working late during launches.', reviews:'Great people and a flexible hybrid schedule. Managers check in every week. Promotions felt slow and unclear. Pay was fair but raises were small. Launch weeks meant long hours.', role:'Marketing coordinator', city:'',
     saved:{needs:['Hybrid or remote options','Clear path to promotion'],wants:['Mentorship','Volunteer time off','Visible leadership']},
     saveNew:true, example:true
   };
@@ -637,21 +695,11 @@ button{font-family:inherit}
   /* ---------- storage ---------- */
   function uid(){ return 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
   function normPrompt(p){
-    p = p || {};
-    var st = parseInt(p.step,10);
-    return {
-      id: (typeof p.id==='string' && p.id && p.id.length<=40) ? p.id : uid(),
-      company: typeof p.company==='string' ? p.company.slice(0,80) : '',
-      needs: arr(p.needs).map(function(x){return x.slice(0,80);}),
-      wants: arr(p.wants).map(function(x){return x.slice(0,80);}),
-      notes: typeof p.notes==='string' ? p.notes.slice(0,4000) : '',
-      step: (st>=1 && st<=5) ? st : 1,
-      done: !!p.done,
-      created: +p.created || Date.now(),
-      updated: +p.updated || Date.now()
-    };
-  }
-  function hasContent(p){ return !!(p.company.trim() || p.needs.length || p.wants.length || p.notes.trim()); }
+  p = p || {};
+  var st = parseInt(p.step,10);
+  return { id: (typeof p.id==='string' && p.id && p.id.length<=40) ? p.id : uid(), company: typeof p.company==='string' ? p.company.slice(0,80) : '', needs: arr(p.needs).map(function(x){return x.slice(0,80);}), wants: arr(p.wants).map(function(x){return x.slice(0,80);}), notes: typeof p.notes==='string' ? p.notes.slice(0,4000) : '', reviews: typeof p.reviews==='string' ? p.reviews.slice(0,12000) : '', role: typeof p.role==='string' ? p.role.slice(0,80) : '', city: typeof p.city==='string' ? p.city.slice(0,80) : '', step: (st>=1 && st<=5) ? st : 1, done: !!p.done, created: +p.created || Date.now(), updated: +p.updated || Date.now() };
+}
+  function hasContent(p){ return !!(p.company.trim() || p.needs.length || p.wants.length || p.notes.trim() || (p.reviews || '').trim()); }
   function loadStore(){
     var out = {saved:{needs:[],wants:[]}, saveNew:true, prompts:[]}, s = null;
     try{ var raw = localStorage.getItem(KEY); if(raw){ var o = JSON.parse(raw); if(o && typeof o==='object') s = o; } }catch(e){}
@@ -748,21 +796,23 @@ button{font-family:inherit}
   function wordFound(text, w){
     return new RegExp('(^|[^a-z0-9])' + rx(stem(w)) + '[a-z]{0,5}(?![a-z])', 'i').test(text);
   }
-  function mentioned(item){
-    var notes = state.notes.toLowerCase();
-    if(!notes.trim()) return false;
-    var it = item.toLowerCase(), i, j;
-    if(notes.indexOf(it) > -1) return true;
-    for(i=0;i<TOPICS.length;i++){
-      var t = TOPICS[i];
-      if(t.keys.some(function(k){return it.indexOf(k)>-1;})){
-        for(j=0;j<t.hits.length;j++){ if(found(notes, t.hits[j])) return true; }
-      }
+  function evidence(){ return (state.notes || '') + '\n' + (state.reviews || ''); }
+function evLabel(){ return (state.reviews || '').trim() ? 'notes or reviews' : 'notes'; }
+function mentioned(item){
+  var notes = evidence().toLowerCase();
+  if(!notes.trim()) return false;
+  var it = item.toLowerCase(), i, j;
+  if(notes.indexOf(it) > -1) return true;
+  for(i=0;i<TOPICS.length;i++){
+    var t = TOPICS[i];
+    if(t.keys.some(function(k){return it.indexOf(k)>-1;})){
+      for(j=0;j<t.hits.length;j++){ if(found(notes, t.hits[j])) return true; }
     }
-    var words = it.split(/[^a-z]+/).filter(function(w){return w.length>=5 && STOP.indexOf(w)<0;});
-    for(i=0;i<words.length;i++){ if(wordFound(notes, words[i])) return true; }
-    return false;
   }
+  var words = it.split(/[^a-z]+/).filter(function(w){return w.length>=5 && STOP.indexOf(w)<0;});
+  for(i=0;i<words.length;i++){ if(wordFound(notes, words[i])) return true; }
+  return false;
+}
   var SALARY_Q = ['What is the salary range for this role, and where in that range do people usually start?','How often is pay reviewed, and what does a raise usually look like?'];
   function salaryAsk(){ return !mentioned('Salary range'); }
   function gaps(){
@@ -775,13 +825,18 @@ button{font-family:inherit}
   /* ---------- text builders ---------- */
   function numbered(list){ return list.length ? list.map(function(x,i){return (i+1)+'. '+x;}).join('\n') : 'None yet.'; }
   function promptText(){
-    var c = state.company.trim() || 'this company';
-    return 'You are a company research agent helping a new grad decide if '+c+' fits their values.\n\n'
-      + 'THEIR NEEDS (dealbreakers):\n'+numbered(state.needs)+'\n\n'
-      + 'THEIR WANTS:\n'+numbered(state.wants)+'\n\n'
-      + 'NOTES FROM SOMEONE THERE:\n'+(state.notes.trim() || 'None yet.')+'\n\n'
-      + 'For each need and want, tell me what public sources say about '+c+', how confident you are, and what you could not confirm. Then write interview questions for anything you could not confirm.';
-  }
+  var c = state.company.trim() || 'this company';
+  var rv = (state.reviews || '').trim();
+  var t = 'You are a company research agent helping a new grad decide if '+c+' fits their values.\n\n' +
+    'THEIR NEEDS (dealbreakers):\n'+numbered(state.needs)+'\n\n' +
+    'THEIR WANTS:\n'+numbered(state.wants)+'\n\n' +
+    'NOTES FROM SOMEONE THERE:\n'+(state.notes.trim() || 'None yet.')+'\n\n';
+  if(rv) t += 'GLASSDOOR REVIEWS I COPIED:\n'+rv+'\n\n';
+  t += 'For each need and want, tell me what public sources say about '+c+', how confident you are, and what you could not confirm.';
+  if(rv) t += ' Pull the repeated themes out of the reviews, quote short phrases as proof, and tell me which complaints look like a pattern and which look like one unhappy person.';
+  t += ' Then write interview questions for anything you could not confirm.';
+  return t;
+}
   function questionFor(item){
     var q = QUESTIONS[item.toLowerCase()];
     if(q) return q;
@@ -862,49 +917,51 @@ button{font-family:inherit}
     if(ui.step===5) renderResult();
   }
   function outBodyHtml(){
-    var g = gaps(), total = g.needs.length + g.wants.length, html = '';
-    if(ui.out==='prompt'){
-      html = '<div class="pbox" id="copyNode" tabindex="0">'+esc(promptText())+'</div>';
-    } else if(ui.out==='check'){
-      if(!state.needs.length && !state.wants.length){
-        html = '<p class="mutetext">Add some needs and wants to see which ones your notes cover.</p>';
-      } else {
-        html = '<p class="mutetext">'+(state.notes.trim() ? 'Compared against your notes.' : 'You have not added notes yet, so nothing is covered.')+'</p>';
-        [['Needs',state.needs],['Wants',state.wants]].forEach(function(p){
-          if(!p[1].length) return;
-          html += '<div class="checkgroup"><h2>'+p[0]+'</h2>' + p[1].map(function(item){
-            var ok = mentioned(item);
-            return '<div class="checkrow"><span>'+esc(item)+'</span>' + (ok
-              ? '<span class="cpill ok">'+CHECK+'Came up in notes</span>'
-              : '<span class="cpill gap">'+WARN+'Not in your notes yet</span>') + '</div>';
-          }).join('') + '</div>';
-        });
-        html += '<p class="mutetext">"Came up" only means your notes mention the topic. Read them to see if it is good news.</p>';
-        if(total) html += '<button type="button" class="btn sm out" style="align-self:flex-start" data-out="questions">See questions for the gaps</button>';
-      }
+  var g = gaps(), total = g.needs.length + g.wants.length, html = '', ev = evLabel();
+  if(ui.out==='prompt'){
+    html = '<div class="pbox" id="copyNode" tabindex="0">'+esc(promptText())+'</div>';
+  } else if(ui.out==='check'){
+    if(!state.needs.length && !state.wants.length){
+      html = '<p class="mutetext">Add some needs and wants to see which ones your notes and reviews cover.</p>';
     } else {
-      var ask = salaryAsk(), hasItems = state.needs.length || state.wants.length;
-      if(!hasItems) html += '<p class="mutetext">Add some needs and wants and your questions will show up here.</p>';
-      else if(!total) html += '<p class="mutetext">Your notes bring up every need and want. For each one, ask for a recent example from their own experience.</p>';
-      else html += '<p class="mutetext">Made for the things your notes do not cover yet.</p>';
-      if(total || ask){
-        html += '<div id="copyNode" class="qwrap">';
-        [['Your needs',g.needs],['Your wants',g.wants]].forEach(function(p){
-          if(!p[1].length) return;
-          html += '<div class="qgroup"><h2>'+p[0]+'</h2><ol>' + p[1].map(function(item){
-            var q = questionFor(item);
-            return '<li><span class="why">'+esc(item)+'</span>'+esc(q[0])+'<span class="fu">Follow up: '+esc(q[1])+'</span></li>';
-          }).join('') + '</ol></div>';
-        });
-        if(ask) html += '<div class="qgroup"><h2>Always worth asking</h2><ol><li><span class="why">Salary range</span>'+esc(SALARY_Q[0])+'<span class="fu">Follow up: '+esc(SALARY_Q[1])+'</span></li></ol></div>';
-        html += '</div>';
-      }
+      html = '<p class="mutetext">'+(evidence().trim() ? 'Compared against your '+ev+'.' : 'You have not added notes or reviews yet, so nothing is covered.')+'</p>';
+      [['Needs',state.needs],['Wants',state.wants]].forEach(function(p){
+        if(!p[1].length) return;
+        html += '<div class="checkgroup"><h2>'+p[0]+'</h2>' + p[1].map(function(item){
+          var ok = mentioned(item);
+          return '<div class="checkrow"><span>'+esc(item)+'</span>' + (ok ? '<span class="cpill ok">'+CHECK+'Came up in '+ev+'</span>' : '<span class="cpill gap">'+WARN+'Not in your '+ev+' yet</span>') + '</div>';
+        }).join('') + '</div>';
+      });
+      html += '<p class="mutetext">"Came up" only means your '+ev+' mention the topic. Read them to see if it is good news.</p>';
+      if(total) html += '<button type="button" class="btn sm out" style="align-self:flex-start" data-out="questions">See questions for the gaps</button>';
     }
-    return html;
+  } else if(ui.out==='research'){
+    html = '<p class="mutetext">Paste these into an AI that can browse the web. Fill in the blanks and the prompts update. Anything you leave blank stays as a space you can fill in later.</p>' +
+      '<div class="rfill"><div class="field"><label class="lab" for="roleIn">Role</label><input class="input" id="roleIn" type="text" maxlength="80" placeholder="Like marketing coordinator" autocomplete="off" value="'+esc(state.role || '')+'"></div>' +
+      '<div class="field"><label class="lab" for="cityIn">City</label><input class="input" id="cityIn" type="text" maxlength="80" placeholder="Like Chicago" autocomplete="off" value="'+esc(state.city || '')+'"></div></div>' +
+      '<div class="rgrid" id="rcards">'+researchCards()+'</div>';
+  } else {
+    var ask = salaryAsk(), hasItems = state.needs.length || state.wants.length;
+    if(!hasItems) html += '<p class="mutetext">Add some needs and wants and your questions will show up here.</p>';
+    else if(!total) html += '<p class="mutetext">Your '+ev+' bring up every need and want. For each one, ask for a recent example from their own experience.</p>';
+    else html += '<p class="mutetext">Made for the things your '+ev+' do not cover yet.</p>';
+    if(total || ask){
+      html += '<div id="copyNode" class="qwrap">';
+      [['Your needs',g.needs],['Your wants',g.wants]].forEach(function(p){
+        if(!p[1].length) return;
+        html += '<div class="qgroup"><h2>'+p[0]+'</h2><ol>' + p[1].map(function(item){
+          var q = questionFor(item);
+          return '<li><span class="why">'+esc(item)+'</span>'+esc(q[0])+'<span class="fu">Follow up: '+esc(q[1])+'</span></li>';
+        }).join('') + '</ol></div>';
+      });
+      if(ask) html += '<div class="qgroup"><h2>Always worth asking</h2><ol><li><span class="why">Salary range</span>'+esc(SALARY_Q[0])+'<span class="fu">Follow up: '+esc(SALARY_Q[1])+'</span></li></ol></div>';
+      html += '</div>';
+    }
   }
+  return html;
+}
   function renderResult(){
-    ['prompt','check','questions'].forEach(function(t){
-      var b = $('otab-'+t); b.setAttribute('aria-selected', ui.out===t); b.tabIndex = ui.out===t ? 0 : -1;
+    ['prompt','check','questions','research'].forEach(function(t){ var b = $('otab-'+t); b.setAttribute('aria-selected', ui.out===t); b.tabIndex = ui.out===t ? 0 : -1;
     });
     var g = gaps(), total = g.needs.length + g.wants.length;
     var badge = $('gapBadge'); badge.hidden = !total; badge.textContent = total;
@@ -975,9 +1032,7 @@ button{font-family:inherit}
       html += '<section class="tile" aria-labelledby="cat-'+cat.id+'"><div><p class="kicker" id="cat-'+cat.id+'">'+esc(cat.title)+'</p><h2 class="tile-q">'+esc(CAT_Q[cat.id])+'</h2></div><div class="chips" style="margin-top:0">'
         + items.map(function(t){
           return '<button type="button" class="pick '+cls+'" data-act="pick" data-kind="'+kind+'" data-text="'+esc(t)+'" aria-pressed="'+has(state[kind], t)+'"><span>'+esc(t)+'</span><span class="tick">'+CHECK+'</span></button>';
-        }).join('') + '</div></section>';
-    });
-    $('catalog').innerHTML = shown ? html : '<div class="card" style="grid-column:1/-1"><p class="mutetext">Nothing matches "'+esc(ui.filter)+'". Try a shorter word, or add your own in the builder.</p></div>';
+        }).join('') + '</div>' + evHtml(cat) + '</section>'; }); $('catalog').innerHTML = shown ? html : '<div class="card" style="grid-column:1/-1"><p class="mutetext">Nothing matches "'+esc(ui.filter)+'". Try a shorter word, or add your own in the builder.</p></div>';
     ['needs','wants'].forEach(function(k){ $('mode-'+k).setAttribute('aria-pressed', ui.mode===k); });
     $('picksBody').innerHTML = ['needs','wants'].map(function(k){
       var list = state[k], cl = k==='needs' ? 'need' : 'want';
@@ -996,7 +1051,7 @@ button{font-family:inherit}
     var checks = [['Needs',state.needs],['Wants',state.wants]].map(function(p){
       return '<div class="checkgroup"><h2>'+p[0]+'</h2>'+p[1].map(function(item){
         var ok = mentioned(item);
-        return '<div class="checkrow"><span>'+esc(item)+'</span>'+(ok ? '<span class="cpill ok">'+CHECK+'Came up in notes</span>' : '<span class="cpill gap">'+WARN+'Not in your notes yet</span>')+'</div>';
+        return '<div class="checkrow"><span>'+esc(item)+'</span>'+(ok ? '<span class="cpill ok">'+CHECK+'Came up in '+evLabel()+'</span>' : '<span class="cpill gap">'+WARN+'Not in your '+evLabel()+' yet</span>')+'</div>';
       }).join('')+'</div>';
     }).join('');
     var qh = '';
@@ -1006,16 +1061,14 @@ button{font-family:inherit}
         return '<li><span class="why">'+esc(item)+'</span>'+esc(q[0])+'<span class="fu">Follow up: '+esc(q[1])+'</span></li>'; }).join('')+'</ol></div>';
     });
     if(ask) qh += '<div class="qgroup"><h2>Always worth asking</h2><ol><li><span class="why">Salary range</span>'+esc(SALARY_Q[0])+'<span class="fu">Follow up: '+esc(SALARY_Q[1])+'</span></li></ol></div>';
-    var ex = state;
-    state = real;
+    var rpAll = researchPrompts(); var rp = [rpAll[0], rpAll[3]]; var ex = state; state = real;
     $('exampleBody').innerHTML =
       '<section class="card ex"><h2>1. What the grad entered</h2><p class="sub">Northwind Foods is made up.</p>'
       + '<p class="lab">Needs</p><div class="chips" style="margin-top:0">'+ex.needs.map(function(t){return '<span class="chip need" style="padding:0 20px;cursor:default">'+esc(t)+'</span>';}).join('')+'</div>'
       + '<p class="lab">Wants</p><div class="chips" style="margin-top:0">'+ex.wants.map(function(t){return '<span class="chip want" style="padding:0 20px;cursor:default">'+esc(t)+'</span>';}).join('')+'</div>'
-      + '<p class="lab">Notes from someone there</p><div class="pbox">'+esc(ex.notes)+'</div></section>'
-      + '<section class="card ex"><h2>2. The prompt it builds</h2><p class="sub">Paste this into the AI model you already use.</p><div class="pbox">'+esc(pr)+'</div></section>'
+      + '<p class="lab">Notes from someone there</p><div class="pbox">'+esc(ex.notes)+'</div>' + '<p class="lab">Glassdoor reviews they copied</p><div class="pbox">'+esc(ex.reviews || '')+'</div></section>' + '<section class="card ex"><h2>2. The prompt it builds</h2><p class="sub">Paste this into the AI model you already use.</p><div class="pbox">'+esc(pr)+'</div></section>'
       + '<section class="card ex"><h2>3. The needs check</h2><p class="sub">Which topics came up in the notes, and which did not.</p>'+checks+'</section>'
-      + '<section class="card ex"><h2>4. Questions to ask</h2><p class="sub">Made for the topics the notes did not cover, plus salary.</p>'+qh+'</section>';
+      + '<section class="card ex"><h2>4. Questions to ask</h2><p class="sub">Made for the topics the notes did not cover, plus salary.</p>'+qh+'</section>' + '<section class="card ex"><h2>5. Web search prompts</h2><p class="sub">Prompts for an AI that can browse the web. The dashed spaces are blanks you fill in. Two of six are shown, and the city is left blank on purpose.</p>' + rp.map(function(p){ return '<div class="rcard" style="margin-bottom:14px"><h3>'+esc(p.k)+'</h3><p class="rtext">'+markBlanks(p.t)+'</p></div>'; }).join('') + '</section>';
   }
   function viewFromHash(){ var h = ''; try{ h = location.hash.replace('#',''); }catch(e){} return VIEWS.indexOf(h) > -1 ? h : 'home'; }
   function renderView(){
@@ -1035,7 +1088,7 @@ button{font-family:inherit}
   }
   function syncInputs(){
     if($('company').value !== state.company) $('company').value = state.company;
-    if($('notes').value !== state.notes) $('notes').value = state.notes;
+    if($('notes').value !== state.notes) $('notes').value = state.notes; if($('reviews').value !== (state.reviews || '')) $('reviews').value = state.reviews || ''; updateGd();
     ['needs','wants'].forEach(renderChips);
   }
   function ensureCur(){
@@ -1081,7 +1134,46 @@ button{font-family:inherit}
   }
 
   /* ---------- actions ---------- */
-  function addItem(kind, text){
+  function evHtml(cat){
+  if(!cat.ev || !cat.ev.length) return '';
+  return '<p class="evid"><span class="evk">Backed by research</span>' + cat.ev.map(function(e){ var s = SRC[e.s]; return esc(e.n) + ' <a href="'+esc(s.u)+'" target="_blank" rel="noopener noreferrer">'+esc(s.t)+'</a>'; }).join(' ') + '</p>';
+}
+function fillBlanks(s){
+  var role = (state.role || '').trim() || '[ROLE]', city = (state.city || '').trim() || '[CITY]';
+  return s.replace(/\{ROLE\}/g, function(){ return role; }).replace(/\{CITY\}/g, function(){ return city; });
+}
+function researchPrompts(){
+  var c = state.company.trim() || 'the company';
+  var needs = state.needs.length ? state.needs.join(', ') : 'the needs I list below';
+  var wants = state.wants.length ? state.wants.join(', ') : 'the wants I list below';
+  var end = ' Name the source for every claim and link it. If you cannot browse the web, tell me instead of guessing.';
+  var list = [
+    {k:'Values in action', t:'Search the web for what '+c+' says it stands for, then look for recent news, press, and public posts that show whether it acts on that. Focus on these needs: '+needs+'. For each one, tell me what you found, how confident you are (low, medium, or high), and what you could not find.'+end},
+    {k:'Stability', t:'Search for recent news about '+c+', including layoffs, funding, leadership changes, and how the business is doing. Tell me what that means for someone starting as {ROLE} and what I should ask about.'+end},
+    {k:'Growth', t:'Look up how people move up at '+c+'. Find career paths, typical timelines, and public stories from people who started in roles like {ROLE}. Tell me where they usually go next.'+end},
+    {k:'Pay and benefits', t:'Find typical pay, raises, and benefits for {ROLE} at '+c+' in {CITY}. Tell me how reliable each number is and whether the company shares pay ranges in job posts.'+end},
+    {k:'Culture', t:'Find what current and former employees say publicly about working at '+c+' on teams like {ROLE}. Pull out repeated themes about coworkers, managers, workload, and flexibility. Separate patterns from one unhappy review.'+end},
+    {k:'Interview questions', t:'Using everything you find about '+c+', write 6 questions I can ask in my interview for {ROLE}, each with a follow up. Aim them at my needs ('+needs+') and my wants ('+wants+') and at anything you could not confirm.'+end}
+  ];
+  return list.map(function(x){ return {k:x.k, t:fillBlanks(x.t)}; });
+}
+function markBlanks(t){ return esc(t).replace(/\[(ROLE|CITY)\]/g, function(m){ return '<mark>'+m+'</mark>'; }); }
+function researchCards(){
+  return researchPrompts().map(function(p,i){
+    return '<div class="rcard"><h3>'+esc(p.k)+'</h3><p class="rtext">'+markBlanks(p.t)+'</p><div><button type="button" class="btn sm out" data-act="copy-research" data-i="'+i+'" data-label="Copy prompt">Copy prompt</button></div></div>';
+  }).join('');
+}
+function copyResearch(i, btn){
+  var p = researchPrompts()[i]; if(!p) return;
+  var node = btn.closest('.rcard').querySelector('.rtext');
+  clipWrite(p.t, function(){ flash(btn, 'Copied'); showCopied('Copied. Paste it into an AI that can browse the web.'); }, function(){ selectNode(node); flash(btn, 'Press Ctrl or Cmd + C'); });
+}
+function updateGd(){
+  var a = $('gdLink'); if(!a) return;
+  var c = (state.company || '').trim();
+  a.href = c ? 'https://www.glassdoor.com/Search/results.htm?keyword=' + encodeURIComponent(c) : 'https://www.glassdoor.com/Reviews/index.htm';
+}
+function addItem(kind, text){
     var t = String(text).trim().replace(/\s+/g,' ');
     if(!t || t.length>80) return;
     if(!has(state[kind], t)) state[kind].push(t);
@@ -1269,7 +1361,7 @@ button{font-family:inherit}
       setView('ideas', true);
       if(kind==='notes') $('starters').scrollIntoView({block:'start'});
     }
-    else if(act==='copy'){ copy(el.getAttribute('data-what'), el); }
+    else if(act==='copy'){ copy(el.getAttribute('data-what'), el); } else if(act==='copy-research'){ copyResearch(parseInt(el.getAttribute('data-i'),10), el); }
   });
   document.addEventListener('keydown', function(e){
     if(e.key==='Escape' && ui.menuId){ closeMenu(true); }
@@ -1285,12 +1377,13 @@ button{font-family:inherit}
   $('reuseChk').addEventListener('change', function(){ ui.reuse = this.checked; });
   $('importFile').addEventListener('change', function(){ importData(this.files && this.files[0]); this.value = ''; });
   $('filter').addEventListener('input', function(){ ui.filter = this.value; renderLibrary(); });
+$('reviews').addEventListener('input', function(){ if(!ui.cur) return; state.reviews = this.value; save(); });
+document.addEventListener('input', function(e){ var t = e.target; if(!t || (t.id !== 'roleIn' && t.id !== 'cityIn') || !ui.cur) return; state[t.id==='roleIn' ? 'role' : 'city'] = t.value; save(); var rc = $('rcards'); if(rc) rc.innerHTML = researchCards(); });
   /* arrow keys move between the result tabs */
   $('p5').addEventListener('keydown', function(e){
     if(e.key!=='ArrowRight' && e.key!=='ArrowLeft') return;
     if(!e.target.closest('[role="tab"]')) return;
-    var order = ['prompt','check','questions'], i = order.indexOf(ui.out);
-    i = (i + (e.key==='ArrowRight' ? 1 : 2)) % 3; ui.out = order[i]; $('copiedMsg').innerHTML=''; renderResult(); $('otab-'+ui.out).focus(); e.preventDefault();
+    var order = ['prompt','check','questions','research'], i = order.indexOf(ui.out); i = (i + (e.key==='ArrowRight' ? 1 : 3)) % 4; ui.out = order[i]; $('copiedMsg').innerHTML=''; renderResult(); $('otab-'+ui.out).focus(); e.preventDefault();
   });
   window.addEventListener('hashchange', function(){ ui.view = viewFromHash(); renderView(); });
   ui.view = viewFromHash();
