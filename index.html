@@ -344,6 +344,28 @@ button{font-family:inherit}
 .srclist li{font-size:15.5px;line-height:1.5;overflow-wrap:anywhere}
 .srclist a{font-weight:700}
 @media (max-width:720px){.rfill{grid-template-columns:1fr}.rcard{padding:18px 18px}}
+
+/* example page: inverted colors so it reads as an example */
+body.ex{--cream:#0F2240;--paper:#17305A;--ink:#F3F6FC;--blue:#A9C1E8;--blue2:#A9C1E8;--gold:#A9C1E8;--gsoft:#1E3B69;--wash:#10284C;--line:#30507F;--muted:#C3D1EA;--field:#6F8FC4;--ui:#7C98C8;--mint:#24466F;--sage:#9DC3AB;--green:#9DC3AB}
+body.ex .btn,body.ex .btn:hover{color:#0F2240}
+body.ex .nav a.on{color:#0F2240}
+body.ex .chip.need{color:#0F2240}
+body.ex .exwrap{gap:16px}
+.exd{padding:0}
+.exd>summary{cursor:pointer;list-style:none;padding:22px 32px;font:600 26px 'Fraunces',Georgia,serif;letter-spacing:-.02em;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
+.exd>summary::-webkit-details-marker{display:none}
+.exd>summary::after{content:"+";font:500 28px 'DM Sans',sans-serif;color:var(--blue2)}
+.exd[open]>summary::after{content:"\2212"}
+.exb{display:flex;flex-direction:column;gap:16px;padding:0 32px 32px}
+.exb .sub{margin-top:0}
+/* research notes: tap to open */
+.evid summary{cursor:pointer;list-style:none;min-height:32px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0}
+.evid summary::-webkit-details-marker{display:none}
+.evid summary::after{content:"+";font-size:18px;letter-spacing:0}
+.evid[open] summary::after{content:"\2212"}
+.evid .evb{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.evid .evb p{margin:0}
+@media (max-width:720px){.exd>summary{padding:18px 22px;font-size:22px}.exb{padding:0 22px 24px}}
 </style>
 </head>
 <body>
@@ -497,7 +519,7 @@ button{font-family:inherit}
 <div id="viewExample" class="view" hidden>
   <div class="exwrap">
     <section class="card">
-      <p class="kicker">Example</p>
+      <span class="tag">Example only</span>
       <h1 id="exampleTitle" tabindex="-1" style="font-size:clamp(34px,5vw,52px)">See how it <em>works</em></h1>
       <p class="sub">A made up example, so you can see what you get before you start. Your own list is blank until you add to it.</p>
       <p style="margin:20px 0 0"><button type="button" class="btn" data-act="start">Start my own</button></p>
@@ -1077,13 +1099,13 @@ function mentioned(item){
     ['builder','ideas','example','prompts'].forEach(function(n){
       var a = $('nav-'+n); if(v===n){ a.setAttribute('aria-current','page'); a.classList.add('on'); } else { a.removeAttribute('aria-current'); a.classList.remove('on'); }
     });
-    $('nav-cta').hidden = v !== 'home';
+    $('nav-cta').hidden = v !== 'home'; document.body.classList.toggle('ex', v === 'example');
     try{ document.title = TITLES[v]; }catch(e){}
     if(v==='home') renderResume();
     if(v==='builder'){ ensureCur(); renderSteps(); syncInputs(); }
     if(v==='prompts') renderPrompts();
     if(v==='ideas') renderLibrary();
-    if(v==='example') renderExample();
+    if(v==='example'){ renderExample(); collapseExample(); }
     renderToast();
   }
   function syncInputs(){
@@ -1134,9 +1156,21 @@ function mentioned(item){
   }
 
   /* ---------- actions ---------- */
-  function evHtml(cat){
+  function collapseExample(){
+  var secs = document.querySelectorAll('#exampleBody section.ex');
+  [].forEach.call(secs, function(sec, i){
+    var h = sec.querySelector('h2'); if(!h) return;
+    var d = document.createElement('details'); d.className = 'card exd'; if(i === 0) d.open = true;
+    var sm = document.createElement('summary'); sm.textContent = h.textContent;
+    var b = document.createElement('div'); b.className = 'exb';
+    sec.removeChild(h);
+    while(sec.firstChild) b.appendChild(sec.firstChild);
+    d.appendChild(sm); d.appendChild(b); sec.parentNode.replaceChild(d, sec);
+  });
+}
+function evHtml(cat){
   if(!cat.ev || !cat.ev.length) return '';
-  return '<p class="evid"><span class="evk">Backed by research</span>' + cat.ev.map(function(e){ var s = SRC[e.s]; return esc(e.n) + ' <a href="'+esc(s.u)+'" target="_blank" rel="noopener noreferrer">'+esc(s.t)+'</a>'; }).join(' ') + '</p>';
+  return '<details class="evid"><summary class="evk">Backed by research</summary><div class="evb">' + cat.ev.map(function(e){ var s = SRC[e.s]; return '<p>' + esc(e.n) + ' <a href="'+esc(s.u)+'" target="_blank" rel="noopener noreferrer">'+esc(s.t)+'</a></p>'; }).join('') + '</div></details>';
 }
 function fillBlanks(s){
   var role = (state.role || '').trim() || '[ROLE]', city = (state.city || '').trim() || '[CITY]';
