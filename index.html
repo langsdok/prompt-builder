@@ -366,6 +366,19 @@ body.ex .exwrap{gap:16px}
 .evid .evb{display:flex;flex-direction:column;gap:8px;margin-top:6px}
 .evid .evb p{margin:0}
 @media (max-width:720px){.exd>summary{padding:18px 22px;font-size:22px}.exb{padding:0 22px 24px}}
+
+/* ideas library: one row per group, jump bar */
+#catalog{display:flex;flex-direction:column;gap:16px}
+.tile{display:grid;grid-template-columns:230px minmax(0,1fr);gap:12px 32px;align-items:start;padding:26px 30px;scroll-margin-top:76px}
+.tile>div:first-child{grid-column:1;grid-row:1 / span 2}
+.tile>.chips,.tile>.evid{grid-column:2}
+.tile>.chips{grid-row:1}
+.tile .tile-q{font-size:21px;margin-top:4px}
+.catnav{position:sticky;top:0;z-index:6;display:flex;gap:8px;overflow-x:auto;padding:10px 0;background:var(--cream);scrollbar-width:thin}
+.catbtn{flex:none;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:500 15px 'DM Sans',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.catbtn:hover{border-color:var(--blue2)}
+.catbtn .badge{margin:0}
+@media (max-width:720px){.tile{grid-template-columns:minmax(0,1fr);padding:22px}.tile>div:first-child,.tile>.chips,.tile>.evid{grid-column:1;grid-row:auto}}
 </style>
 </head>
 <body>
@@ -488,12 +501,13 @@ body.ex .exwrap{gap:16px}
             <button type="button" id="mode-wants" data-act="mode" data-kind="wants">Add to wants</button>
           </div>
           <label class="sr" for="filter">Filter ideas</label>
-          <input class="input" id="filter" type="search" placeholder="Filter ideas, like pay or mentor" maxlength="40" autocomplete="off">
+          <input class="input" id="filter" type="search" placeholder="Filter ideas, like pay or mentor" maxlength="40" autocomplete="off"> <button type="button" class="btn sm out" data-act="surprise">Surprise me with 3</button>
         </div>
-        <div class="row2"><button type="button" class="btn sm out" data-act="surprise">Surprise me with 3</button><button type="button" class="btn sm" data-act="back">Back to builder</button></div>
-        <p class="mutetext" id="surpriseMsg" aria-live="polite" style="min-height:1.5em"></p>
+        
+        <p class="mutetext" id="surpriseMsg" aria-live="polite"></p>
       </section>
-      <div id="catalog"></div>
+      <nav class="catnav" id="catNav" aria-label="Jump to a group"></nav>
+ <div id="catalog"></div>
       <section class="card" id="research" aria-labelledby="researchTitle"><h2 id="researchTitle" style="font-size:30px">The research behind these ideas</h2><p class="sub">Groups with a research note lean on what graduates say they want. NACE covers the practical side well. Deloitte covers purpose and values, which NACE does not report on. Groups without a note do not have a survey behind them yet.</p>
 <ul class="srclist">
 <li><a href="https://naceweb.org/about-us/press/2026/beyond-the-paycheck-what-the-class-of-2026-really-wants-from-an-employer" target="_blank" rel="noopener noreferrer">NACE, Beyond the Paycheck: What the Class of 2026 Really Wants from an Employer</a> (June 3, 2026). From the NACE 2026 Student Survey: more than 17,000 students at 258 schools, including more than 1,860 graduating seniors, surveyed March 12 to May 15, 2026.</li>
@@ -1055,7 +1069,7 @@ function mentioned(item){
         + items.map(function(t){
           return '<button type="button" class="pick '+cls+'" data-act="pick" data-kind="'+kind+'" data-text="'+esc(t)+'" aria-pressed="'+has(state[kind], t)+'"><span>'+esc(t)+'</span><span class="tick">'+CHECK+'</span></button>';
         }).join('') + '</div>' + evHtml(cat) + '</section>'; }); $('catalog').innerHTML = shown ? html : '<div class="card" style="grid-column:1/-1"><p class="mutetext">Nothing matches "'+esc(ui.filter)+'". Try a shorter word, or add your own in the builder.</p></div>';
-    ['needs','wants'].forEach(function(k){ $('mode-'+k).setAttribute('aria-pressed', ui.mode===k); });
+    ['needs','wants'].forEach(function(k){ $('mode-'+k).setAttribute('aria-pressed', ui.mode===k); }); renderCatNav();
     $('picksBody').innerHTML = ['needs','wants'].map(function(k){
       var list = state[k], cl = k==='needs' ? 'need' : 'want';
       return '<div style="margin-bottom:16px"><h3 class="grp2">'+(k==='needs'?'Needs':'Wants')+' ('+list.length+')</h3><div class="chips" style="margin-top:8px">'
@@ -1104,7 +1118,7 @@ function mentioned(item){
     if(v==='home') renderResume();
     if(v==='builder'){ ensureCur(); renderSteps(); syncInputs(); }
     if(v==='prompts') renderPrompts();
-    if(v==='ideas') renderLibrary();
+    if(v==='ideas'){ renderLibrary(); foldSection('research'); }
     if(v==='example'){ renderExample(); collapseExample(); }
     renderToast();
   }
@@ -1167,6 +1181,24 @@ function mentioned(item){
     while(sec.firstChild) b.appendChild(sec.firstChild);
     d.appendChild(sm); d.appendChild(b); sec.parentNode.replaceChild(d, sec);
   });
+}
+function renderCatNav(){
+  var nav = $('catNav'); if(!nav) return;
+  var f = ui.filter.trim().toLowerCase();
+  nav.innerHTML = CATALOG.filter(function(cat){ return !f || cat.items.some(function(t){ return t.toLowerCase().indexOf(f) > -1; }); }).map(function(cat){
+    var n = cat.items.filter(function(t){ return has(state[ui.mode], t); }).length;
+    return '<button type="button" class="catbtn" data-act="jump" data-id="'+cat.id+'">'+esc(cat.title)+(n ? '<span class="badge" aria-label="'+n+' picked">'+n+'</span>' : '')+'</button>';
+  }).join('');
+}
+function foldSection(id){
+  var sec = $(id); if(!sec || sec.tagName !== 'SECTION') return;
+  var h = sec.querySelector('h2'); if(!h) return;
+  var d = document.createElement('details'); d.className = 'card exd'; d.id = id;
+  var sm = document.createElement('summary'); sm.textContent = h.textContent;
+  var b = document.createElement('div'); b.className = 'exb';
+  sec.removeChild(h);
+  while(sec.firstChild) b.appendChild(sec.firstChild);
+  d.appendChild(sm); d.appendChild(b); sec.parentNode.replaceChild(d, sec);
 }
 function evHtml(cat){
   if(!cat.ev || !cat.ev.length) return '';
@@ -1395,7 +1427,7 @@ function addItem(kind, text){
       setView('ideas', true);
       if(kind==='notes') $('starters').scrollIntoView({block:'start'});
     }
-    else if(act==='copy'){ copy(el.getAttribute('data-what'), el); } else if(act==='copy-research'){ copyResearch(parseInt(el.getAttribute('data-i'),10), el); }
+    else if(act==='copy'){ copy(el.getAttribute('data-what'), el); } else if(act==='jump'){ var jt = $('cat-'+el.getAttribute('data-id')); jt = jt && jt.closest('.tile'); if(jt){ jt.scrollIntoView({block:'start'}); var jq = jt.querySelector('.tile-q'); if(jq){ jq.setAttribute('tabindex','-1'); jq.focus({preventScroll:true}); } } } else if(act==='copy-research'){ copyResearch(parseInt(el.getAttribute('data-i'),10), el); }
   });
   document.addEventListener('keydown', function(e){
     if(e.key==='Escape' && ui.menuId){ closeMenu(true); }
