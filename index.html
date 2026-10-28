@@ -589,7 +589,7 @@ body.ex .exwrap{gap:16px}
     'real feedback':['How often do you get feedback, and is it written or a conversation?','What was the most useful feedback you got here?'],
     'stretch projects':['How does the team decide who gets projects that stretch them?','Can you tell me about one you got to take on?'],
     'training in my first 90 days':['What does onboarding look like for the first three months?','Is there a person who walks new hires through it?'],
-    'kind teammates':['How would you describe the people on this team?','What do people do when someone is struggling?'],
+   
     'being listened to':['When did your input last change a decision on this team?','How do people share ideas, and what happens next?'],
     'someone i can ask questions':['Who do new people go to with questions, and how fast do they hear back?','Do people feel free to ask anytime, or do they figure it out alone?'],
     'low turnover':['How long have most people on this team been here?','Why do people leave, when they do?'],
@@ -618,7 +618,7 @@ body.ex .exwrap{gap:16px}
     {id:'pay', title:'Pay and benefits', blurb:'What you earn and what comes with it.', items:['Fair pay','Pay range shared up front','Health insurance','Retirement match','Student loan help','Paid time off','Bonuses that are clear and fair']},
     {id:'time', title:'Time and flexibility', blurb:'How work fits around the rest of your life.', items:['Hybrid or remote options','Flexible schedule','Reasonable hours','Time off that people actually take','Predictable workload','Room to disconnect after work']},
     {id:'growth', title:'Growth', blurb:'Where you could be in two years.', items:['Clear path to promotion','Room to grow','Learning budget','Mentorship','Real feedback','Stretch projects','Training in my first 90 days']},
-    {id:'people', title:'Your manager and team', blurb:'The people you will see most.', items:['Manager support','Kind teammates','Being listened to','Someone I can ask questions','Low turnover','Clear expectations']},
+    {id:'people', title:'Your manager and team', blurb:'The people you will see most.', items:['Manager support','Being listened to','Someone I can ask questions','Low turnover','Clear expectations']},
     {id:'values', title:'Values and mission', blurb:'What the company stands for in practice.', items:['A mission I believe in','Honest communication','Ethical business practices','Environmental responsibility','Giving back to the community','Volunteer time off']},
     {id:'inclusion', title:'Inclusion', blurb:'Who gets to belong and be heard.', items:['Diverse teams','Inclusive leadership','Equal pay across roles','Respect for different backgrounds','Accessible workplace','Parental leave']},
     {id:'culture', title:'Culture', blurb:'How the place feels day to day.', items:['Friendly culture','Team events','Work friendships','Visible leadership','Recognition for good work','Celebrates wins']},
@@ -641,14 +641,14 @@ var EVID = {
 var NEWITEMS = {pay:['Annual raises'], growth:['Chances to build new skills'], people:['Friendly coworkers'], culture:['Healthy workplace culture'], stability:['Affordable cost of living','A welcoming, diverse community']};
 CATALOG.forEach(function(c){ (NEWITEMS[c.id] || []).forEach(function(t){ c.items.push(t); }); c.ev = EVID[c.id] || []; });
 var CAT_Q = {
-    pay:'What makes the numbers feel fair?',
+    pay:'What do you want from your paycheck and benefits?',
     time:'What should your week look like?',
-    growth:'Where do you want to be in two years?',
-    people:'Who do you want sitting next to you?',
-    values:'What should your work stand for?',
-    inclusion:'Who gets a seat at the table?',
-    culture:'What does a good Tuesday feel like?',
-    stability:'Where do you want to land, and for how long?'
+    growth:'What will help you grow?',
+    people:'What do you need from your manager and team?',
+    values:'What should your company stand for?',
+    inclusion:'What makes a workplace feel like it includes you?',
+    culture:'What should day to day feel like?',
+    stability:'What do you need to feel settled?'
   };
   function icon(inner){ return '<svg class="tile-icon" aria-hidden="true" width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">'+inner+'</svg>'; }
   var ICONS = {
