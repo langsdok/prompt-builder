@@ -318,6 +318,22 @@ button{font-family:inherit}
 .evid a{display:inline-block;padding:10px 0}
 .catnav{padding-right:44px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent)}
 @media (max-width:720px){.site .wrap{flex-wrap:wrap}.nav{width:100%;overflow-x:auto;flex-wrap:nowrap;gap:2px;padding-bottom:2px}.nav a,.nav a.mp,.nav a.on{display:inline-flex !important;padding:10px 12px;font-size:15px;white-space:nowrap;min-height:44px;align-items:center}.nav a.cta{display:none !important}}
+.tkwrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.tkwrap h2{font-size:32px}
+.tkparts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.tkpart{background:var(--wash);border-radius:18px;padding:16px 18px}
+.tkpart b{display:block;margin-bottom:4px}
+.tkpart span{color:var(--muted);font-size:15px}
+.tktabs{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}
+.catbtn[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tksteps{padding-left:22px;margin:12px 0 0;display:flex;flex-direction:column;gap:8px}
+.tkgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tkpre{font-family:'DM Sans',system-ui,sans-serif;max-height:200px;overflow:auto}
+.tkmom{display:flex;gap:14px;align-items:baseline;background:var(--mint);border-radius:16px;padding:14px 18px}
+.tkmom b{min-width:170px}
+.tkmom span{color:var(--muted);font-size:15px}
+.tkmoms{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+@media (max-width:720px){.tkparts,.tkgrid{grid-template-columns:1fr}.tkmom{flex-direction:column;gap:2px}}
 @media print{.site,.foot,.stepper,.toast{display:none}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 .saved h2{font-size:24px;line-height:1.2}
@@ -395,6 +411,7 @@ body.ex .exwrap{gap:16px}
       <a href="#example" data-view="example" id="nav-example">Example</a>
       <a href="#builder" data-view="builder" id="nav-builder">Builder</a>
       <a href="#ideas" data-view="ideas" id="nav-ideas">Ideas library</a>
+<a href="#toolkit" data-view="toolkit" id="nav-toolkit">Toolkit</a>
       <a href="#prompts" data-view="prompts" id="nav-prompts" class="mp">My prompts</a>
       <a href="#builder" class="cta" id="nav-cta" data-act="start">Start building</a>
     </nav>
@@ -546,6 +563,8 @@ body.ex .exwrap{gap:16px}
     <div id="exampleBody"></div>
   </div>
 </div>
+
+<div id="viewToolkit" class="view" hidden><div id="toolkitBody"></div></div>
 
 </main>
 
@@ -730,8 +749,8 @@ var STOP = ['clear','about','believe','options','something','where','their','the
   var XICON = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
   var WARN = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3v6M8 12.2v.1"/></svg>';
   var STEPS = ['Company','Needs','Wants','Notes','Prompt'];
-  var VIEWS = ['home','builder','prompts','ideas','example'];
-  var TITLES = {home:'Beyond the Paycheck Prompt Builder', builder:'Builder | Beyond the Paycheck', prompts:'My prompts | Beyond the Paycheck', ideas:'Ideas library | Beyond the Paycheck', example:'Example | Beyond the Paycheck'};
+  var VIEWS = ['home','builder','prompts','ideas','example','toolkit'];
+  var TITLES = {home:'Beyond the Paycheck Prompt Builder', builder:'Builder | Beyond the Paycheck', prompts:'My prompts | Beyond the Paycheck', ideas:'Ideas library | Beyond the Paycheck', example:'Example | Beyond the Paycheck', toolkit:'Toolkit | Beyond the Paycheck'};
 
   /* ---------- storage ---------- */
   function uid(){ return 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
@@ -1115,7 +1134,7 @@ function mentioned(item){
   function renderView(){
     var v = ui.view;
     VIEWS.forEach(function(n){ $('view'+cap(n)).hidden = v !== n; });
-    ['builder','ideas','example','prompts'].forEach(function(n){
+    ['builder','ideas','example','prompts','toolkit'].forEach(function(n){
       var a = $('nav-'+n); if(v===n){ a.setAttribute('aria-current','page'); a.classList.add('on'); } else { a.removeAttribute('aria-current'); a.classList.remove('on'); }
     });
     $('nav-cta').hidden = v !== 'home'; document.body.classList.toggle('ex', v === 'example');
@@ -1125,6 +1144,7 @@ function mentioned(item){
     if(v==='prompts') renderPrompts();
     if(v==='ideas'){ renderLibrary(); foldSection('research'); }
     if(v==='example'){ renderExample(); collapseExample(); }
+if(v==='toolkit') renderToolkit();
     renderToast();
   }
   function syncInputs(){
@@ -1145,7 +1165,7 @@ function mentioned(item){
     if(focusTitle) focusHeading(v);
   }
   function focusHeading(v){
-    var id = v==='ideas' ? 'ideasTitle' : v==='prompts' ? 'promptsTitle' : v==='example' ? 'exampleTitle' : v==='home' ? 'homeTitle' : 't'+ui.step;
+    var id = v==='ideas' ? 'ideasTitle' : v==='prompts' ? 'promptsTitle' : v==='example' ? 'exampleTitle' : v==='toolkit' ? 'toolkitTitle' : v==='home' ? 'homeTitle' : 't'+ui.step;
     var el = $(id); if(el) el.focus({preventScroll:true});
   }
   var keyboard = false;
@@ -1238,6 +1258,38 @@ function copyResearch(i, btn){
   var p = researchPrompts()[i]; if(!p) return;
   var node = btn.closest('.rcard').querySelector('.rtext');
   clipWrite(p.t, function(){ flash(btn, 'Copied'); showCopied('Copied. Paste it into an AI that can browse the web.'); }, function(){ selectNode(node); flash(btn, 'Press Ctrl or Cmd + C'); });
+}
+var TK = {"agent":"You are my job fit research agent. I am a new grad deciding if a company fits what I need from work. I will give you a company name, and sometimes a role and a city.\n\nMy needs profile is pasted below or earlier in this chat. If I have not shared it yet, ask me for my needs and wants before you start.\n\nHow to work:\n1. Search the web for the company. Use recent sources: the company's own careers and values pages, news from the last 12 months, and employee reviews on Glassdoor, Indeed and Reddit when you can reach them.\n2. Go through every need and want on my list, one at a time. Do not skip any.\n3. Give each one a verdict: Fits, Maybe, or Doesn't fit. Add one or two sentences of proof and name the source.\n4. Say what you could not confirm. Never guess. If you find nothing, write \"Could not confirm.\"\n5. Tell patterns apart from one person's opinion. Only call something a theme if several separate sources say it.\n6. Flag anything I did not ask about but would want to know, like layoffs, lawsuits or leadership changes.\n7. End with 3 to 5 questions I can ask the company, starting with what you could not confirm. Write them the way a real person would say them out loud.\n\nKeep it short and plain. No hype. Put the verdicts in a table.\n\nIf I tell you my stage, change your focus. Before I apply: values, stability and pay range. Before my interview: what the team is like and what to ask. Before I accept: benefits, growth path, red flags and what to negotiate.\n\nUse the sources file as background on what recent grads say they want most. It helps when two of my needs pull against each other. Do not treat it as facts about any one company.","sources":"WHAT RECENT GRADS SAY THEY WANT FROM AN EMPLOYER\nUse this as background. It is survey data about grads in general, not facts about any one company.\n\nNACE 2026 Student Survey (graduating seniors), highest to lowest:\n1. Opportunity for career growth and advancement\n2. A good benefits package\n3. Job security\n4. Friendly coworkers\n5. A high starting salary\n\nNACE 2024 Student Survey (juniors):\nJob stability led the list.\nSkill development, friendly coworkers and a healthy workplace culture made the top five.\nStudents expect pay to be transparent and look for annual raises.\nHybrid is a real split: nearly 43% prefer it, and just over half prefer to be on site every day.\nCost of living was the biggest worry for students thinking about relocating.\nNearly two thirds said a diverse, tolerant community with green space matters.\n\nDeloitte 2025 Gen Z and Millennial Survey:\n89% of Gen Z say a sense of purpose matters to their job satisfaction and well being, and 41% have rejected a potential employer over their personal ethics or beliefs.\n70% of Gen Z say a company's environmental record matters, but only 23% researched it before accepting a job.\n\nWhere this comes from:\nNACE, Beyond the Paycheck: What the Class of 2026 Really Wants from an Employer (June 3, 2026)\nNACE, Job Stability, Healthy Workplace Culture Top New Grad Wish List (May 19, 2025)\nDeloitte, 2025 Gen Z and Millennial Survey","compare":"Now compare all the companies we have checked so far. Make a table with one row per company and one column per need I listed. In each box write Fits, Maybe, or Doesn't fit, plus a few words on why. Under the table, tell me which company fits best and what I still need to ask the others.","tools":[{"n":"Claude","note":"Projects work on the free plan (up to 5 projects).","steps":["Go to claude.ai and open Projects in the sidebar, then New project.","Name it Job fit checker.","Paste the agent instructions into the project instructions box.","Add the sources file as project knowledge.","Start a chat inside the project, turn web search on, and type a company name."]},{"n":"ChatGPT","note":"Projects work for free users. Building a custom GPT has needed a paid plan, so use Projects.","steps":["Open Projects in the sidebar and create a new project.","Paste the agent instructions into the project instructions.","Add the sources file to the project.","Start a chat inside the project with search turned on and type a company name."]},{"n":"Gemini","note":"Gems are free.","steps":["Go to gemini.google.com, then Explore Gems, then New Gem.","Name it Job fit checker and paste the agent instructions.","Under Knowledge, add the sources file.","Click Save, then start a chat with the Gem and type a company name."]},{"n":"Any other AI","note":"Works in Copilot, Perplexity or anything with web search.","steps":["Paste the agent instructions as your first message.","Paste the sources file right after it.","Paste your needs profile, then type a company name."]}],"moments":[["Before I apply","Is this a place I even want? Focus on values, stability and pay range."],["Before my interview","What is the team really like, and what should I ask them?"],["Before I accept","Benefits, growth path, red flags and what to negotiate."]]};
+function profileText(){
+var p = ui.cur || store.prompts[0] || null;
+var n = p && p.needs && p.needs.length ? p.needs.join(', ') : '[YOUR NEEDS]';
+var w = p && p.wants && p.wants.length ? p.wants.join(', ') : '[YOUR WANTS]';
+return 'MY NEEDS PROFILE\nNeeds (dealbreakers): ' + n + '\nWants (nice to have): ' + w + '\nRole I am looking for: ' + ((p && p.role) || '[ROLE]') + '\nCity: ' + ((p && p.city) || '[CITY]');
+}
+function tkCard(k, title, note, text){
+return '<div class="rcard"><h3>'+esc(title)+'</h3><p class="hint">'+esc(note)+'</p><pre class="rtext tkpre" id="tk-'+k+'">'+esc(text)+'</pre><div><button type="button" class="btn sm out" data-act="tk-copy" data-k="'+k+'" data-label="Copy">Copy</button></div></div>';
+}
+function renderToolkit(){
+var i0 = ui.tkTool || 0, t = TK.tools[i0];
+var tabs = TK.tools.map(function(x,i){ return '<button type="button" class="catbtn" id="tk-tab-'+i+'" data-act="tk-tool" data-i="'+i+'" aria-pressed="'+(i===i0)+'">'+esc(x.n)+'</button>'; }).join('');
+var steps = t.steps.map(function(s){ return '<li>'+esc(s)+'</li>'; }).join('');
+var moms = TK.moments.map(function(m){ return '<div class="tkmom"><b>'+esc(m[0])+'</b><span>'+esc(m[1])+'</span></div>'; }).join('');
+$('toolkitBody').innerHTML = '<div class="tkwrap">'
++ '<section class="card"><span class="tag">Free toolkit</span><h1 id="toolkitTitle" tabindex="-1" style="margin-top:16px">Build your own job <em>fit</em> agent.</h1><p class="sub">Check any company against what you need. About 10 minutes to set up. No coding, no cost.</p>'
++ '<div class="tkparts"><div class="tkpart"><b>1. Instructions</b><span>Tell the AI how to check a company and how to answer.</span></div><div class="tkpart"><b>2. Sources file</b><span>Survey data on what recent grads want.</span></div><div class="tkpart"><b>3. Web search</b><span>Turn it on so the AI looks things up instead of guessing.</span></div></div></section>'
++ '<section class="card"><h2>Pick your <em>AI</em></h2><div class="tktabs" role="group" aria-label="Choose your AI">'+tabs+'</div><p class="hint">'+esc(t.note)+'</p><ol class="tksteps">'+steps+'</ol></section>'
++ '<section><h2 style="margin-bottom:14px">Copy these <em>four</em> things</h2><div class="tkgrid">'
++ tkCard('agent','Agent instructions','Paste into your project, Gem or first message.',TK.agent)
++ tkCard('sources','Sources file','Save as a text file and upload it, or paste it in.',TK.sources)
++ tkCard('profile','My needs profile','Filled in from your latest prompt in the builder. Paste it once.',profileText())
++ tkCard('compare','Compare prompt','Use it after you have checked two or three companies.',TK.compare)
++ '</div></section>'
++ '<section class="card"><h2>Use it at three <em>moments</em></h2><div class="tkmoms">'+moms+'</div><p class="hint" style="margin-top:14px">Check it worked: type a company you know well. You should get a verdict for each need and a list of what it could not confirm.</p></section>'
++ '</div>';
+}
+function copyTk(k, btn){
+var text = k==='profile' ? profileText() : TK[k]; var node = $('tk-'+k);
+clipWrite(text, function(){ flash(btn, 'Copied'); }, function(){ selectNode(node); flash(btn, 'Press Ctrl or Cmd + C'); });
 }
 function updateGd(){
   var a = $('gdLink'); if(!a) return;
@@ -1440,7 +1492,9 @@ else if(act==='gotoneeds'){ goStep(2); }
       setView('ideas', true);
       if(kind==='notes') $('starters').scrollIntoView({block:'start'});
     }
-    else if(act==='copy'){ copy(el.getAttribute('data-what'), el); } else if(act==='jump'){ var jt = $('cat-'+el.getAttribute('data-id')); jt = jt && jt.closest('.tile'); if(jt){ jt.scrollIntoView({block:'start'}); var jq = jt.querySelector('.tile-q'); if(jq){ jq.setAttribute('tabindex','-1'); jq.focus({preventScroll:true}); } } } else if(act==='copy-research'){ copyResearch(parseInt(el.getAttribute('data-i'),10), el); }
+    else if(act==='copy'){ copy(el.getAttribute('data-what'), el); } else if(act==='jump'){ var jt = $('cat-'+el.getAttribute('data-id')); jt = jt && jt.closest('.tile'); if(jt){ jt.scrollIntoView({block:'start'}); var jq = jt.querySelector('.tile-q'); if(jq){ jq.setAttribute('tabindex','-1'); jq.focus({preventScroll:true}); } } } else if(act==='tk-tool'){ ui.tkTool = parseInt(el.getAttribute('data-i'),10); renderToolkit(); if(keyboard){ var tb = $('tk-tab-'+ui.tkTool); if(tb) tb.focus(); } }
+else if(act==='tk-copy'){ copyTk(el.getAttribute('data-k'), el); }
+else if(act==='copy-research'){ copyResearch(parseInt(el.getAttribute('data-i'),10), el); }
   });
   document.addEventListener('keydown', function(e){
     if(e.key==='Escape' && ui.menuId){ closeMenu(true); }
