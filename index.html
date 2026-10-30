@@ -1296,6 +1296,7 @@ var n = p && p.needs && p.needs.length ? p.needs.join(', ') : '[YOUR NEEDS]';
 var w = p && p.wants && p.wants.length ? p.wants.join(', ') : '[YOUR WANTS]';
 return 'MY NEEDS PROFILE\nNeeds (dealbreakers): ' + n + '\nWants (nice to have): ' + w + '\nRole I am looking for: ' + ((p && p.role) || '[ROLE]') + '\nCity: ' + ((p && p.city) || '[CITY]');
 }
+function quickText(){ return TK.agent + '\n\n' + profileText() + '\n\nCOMPANY TO CHECK: [TYPE A COMPANY NAME HERE, AND THE ROLE IF YOU HAVE ONE]'; }
 function tkCard(k, title, note, text){
 return '<div class="rcard"><h3>'+esc(title)+'</h3><p class="hint">'+esc(note)+'</p><pre class="rtext tkpre" id="tk-'+k+'">'+esc(text)+'</pre><div><button type="button" class="btn sm out" data-act="tk-copy" data-k="'+k+'" data-label="Copy">Copy</button></div></div>';
 }
@@ -1309,8 +1310,9 @@ var fresh = TK.fresh.map(function(m){ return '<div class="tkmom"><b>'+esc(m[0])+
 var exrows = TK.ex.map(function(r){ var ls = r[5].map(function(l){ return l[1] ? '<a href="'+esc(l[1])+'" target="_blank" rel="noopener noreferrer">'+esc(l[0])+'</a>' : '<i>'+esc(l[0])+'</i>'; }).join(' and '); return '<div class="tkexrow"><b>'+esc(r[0])+'</b><span class="v '+r[2]+'">'+esc(r[1])+'</span><span class="c">'+esc(r[3])+'</span><p>'+esc(r[4])+' '+ls+'</p></div>'; }).join('');
 var lib = TK.lib.map(function(r){ return '<li><b>'+esc(r[0])+'</b><a href="'+esc(r[4])+'" target="_blank" rel="noopener noreferrer">'+esc(r[1])+'</a><span>'+esc(r[2])+'. '+esc(r[3])+'. Checked Oct 28, 2026.</span></li>'; }).join('');
 $('toolkitBody').innerHTML = '<div class="tkwrap">'
-+ '<section class="card"><span class="tag">Free toolkit</span><h1 id="toolkitTitle" tabindex="-1" style="margin-top:16px">Build your own job <em>fit</em> agent.</h1><p class="sub">Check any company against what you need. About 10 minutes to set up. No coding, no cost.</p>'
++ '<section class="card"><span class="tag">Free toolkit</span><h1 id="toolkitTitle" tabindex="-1" style="margin-top:16px">Build your own job <em>fit</em> agent.</h1><p class="sub">Check any company against what you need. Try it in one minute, or set it up once in about 10. No coding, no cost.</p>'
 + '<div class="tkparts"><div class="tkpart"><b>1. Instructions</b><span>Tell the AI how to check a company and how to answer.</span></div><div class="tkpart"><b>2. Needs profile</b><span>Paste your needs once so the AI knows what matters to you.</span></div><div class="tkpart"><b>3. Web search</b><span>Turn it on so the AI looks things up instead of guessing.</span></div></div></section>'
++ '<section class="card"><span class="tag">Fastest way</span><h2 style="margin-top:14px">Try it in <em>one minute</em></h2><p class="sub">No project, no setup. Copy this, paste it into any AI chat with web search on, then type over the blank at the bottom with a company name.</p><div class="tkgrid" style="grid-template-columns:1fr;margin-top:14px">'+tkCard('quick','Everything in one paste','Instructions, your needs and a blank for the company.',quickText())+'</div><p class="hint">Want to reuse it for every company? Use the setup below to save it once.</p></section>'
 + '<section class="card"><h2>Pick your <em>AI</em></h2><div class="tktabs" role="group" aria-label="Choose your AI">'+tabs+'</div><p class="hint">'+esc(t.note)+'</p><ol class="tksteps">'+steps+'</ol></section>'
 + '<section><h2 style="margin-bottom:14px">Copy these <em>three</em> things</h2><div class="tkgrid">'
 + tkCard('agent','Agent instructions','Paste into your project, Gem or first message.',TK.agent)
@@ -1343,7 +1345,7 @@ setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
 say('Calendar reminder downloaded.');
 }
 function copyTk(k, btn){
-var text = k==='profile' ? profileText() : TK[k]; var node = $('tk-'+k);
+var text = k==='profile' ? profileText() : k==='quick' ? quickText() : TK[k]; var node = $('tk-'+k);
 clipWrite(text, function(){ flash(btn, 'Copied'); }, function(){ selectNode(node); flash(btn, 'Press Ctrl or Cmd + C'); });
 }
 function updateGd(){
