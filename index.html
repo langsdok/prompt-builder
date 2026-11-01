@@ -410,6 +410,18 @@ body.ex .exwrap{gap:16px}
 .catbtn:hover{border-color:var(--blue2)}
 .catbtn .badge{margin:0}
 @media (max-width:720px){.tile{grid-template-columns:minmax(0,1fr);padding:22px}.tile>div:first-child,.tile>.chips,.tile>.evid{grid-column:1;grid-row:auto}}
+/* mobile fit pass */
+@media (max-width:720px){
+.wrap{padding-left:16px;padding-right:16px}
+.site .wrap{gap:8px;padding-top:14px;padding-bottom:14px}
+.brand{min-width:0;flex:0 1 auto}
+.bw em{font-size:13px}
+.bw b{font-size:21px}
+.nav{flex:1 1 100%;width:100%;overflow:visible;flex-wrap:wrap;gap:6px}
+.nav a,.nav a.mp,.nav a.on{padding:10px 14px;font-size:15px}
+.stepper li::before{width:44px;height:44px}
+.stepper li::after{top:22px;left:calc(50% + 24px);right:calc(-50% + 24px)}
+}
 </style>
 </head>
 <body>
