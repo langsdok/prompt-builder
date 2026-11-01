@@ -377,10 +377,6 @@ button{font-family:inherit}
 @media (max-width:720px){.rfill{grid-template-columns:1fr}.rcard{padding:18px 18px}}
 
 /* example page: inverted colors so it reads as an example */
-body.ex{--cream:#0F2240;--paper:#17305A;--ink:#F3F6FC;--blue:#A9C1E8;--blue2:#A9C1E8;--gold:#A9C1E8;--gsoft:#1E3B69;--wash:#10284C;--line:#30507F;--muted:#C3D1EA;--field:#6F8FC4;--ui:#7C98C8;--mint:#24466F;--sage:#9DC3AB;--green:#9DC3AB}
-body.ex .btn,body.ex .btn:hover{color:#0F2240}
-body.ex .nav a.on{color:#0F2240}
-body.ex .chip.need{color:#0F2240}
 body.ex .exwrap{gap:16px}
 .exd{padding:0}
 .exd>summary{cursor:pointer;list-style:none;padding:22px 32px;font:600 26px 'Fraunces',Georgia,serif;letter-spacing:-.02em;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
@@ -782,7 +778,7 @@ var STOP = ['clear','about','believe','options','something','where','their','the
     company:'Northwind Foods',
     needs:['Hybrid or remote options','Clear path to promotion'],
     wants:['Mentorship','Volunteer time off','Visible leadership'],
-    notes:'Recruiter said the team is hybrid, three days in the office. Managers check in weekly. People mentioned working late during launches.', reviews:'Great people and a flexible hybrid schedule. Managers check in every week. Promotions felt slow and unclear. Pay was fair but raises were small. Launch weeks meant long hours.', role:'Marketing coordinator', city:'',
+    notes:'Recruiter said the team is hybrid, three days in the office. Managers check in weekly. People mentioned working late during launches.', reviews:'Great people and a flexible hybrid schedule. Managers check in every week. Promotions felt slow and unclear. Pay was fair but raises were small. Launch weeks meant long hours.', role:'Marketing coordinator', city:'Chicago', pay:'$55,000 to $60,000',
     saved:{needs:['Hybrid or remote options','Clear path to promotion'],wants:['Mentorship','Volunteer time off','Visible leadership']},
     saveNew:true, example:true
   };
@@ -1168,14 +1164,14 @@ function mentioned(item){
         return '<li><span class="why">'+esc(item)+'</span>'+esc(q[0])+'<span class="fu">Follow up: '+esc(q[1])+'</span></li>'; }).join('')+'</ol></div>';
     });
     if(ask) qh += '<div class="qgroup"><h2>Always worth asking</h2><ol><li><span class="why">Salary range</span>'+esc(SALARY_Q[0])+'<span class="fu">Follow up: '+esc(SALARY_Q[1])+'</span></li></ol></div>';
-    var rpAll = researchPrompts(); var rp = [rpAll[0], rpAll[3]]; var ex = state; state = real;
+    var rpAll = researchPrompts(); var rp = [rpAll[0], rpAll[3]]; var gd = gdPromptText(); var ex = state; state = real;
     $('exampleBody').innerHTML =
       '<section class="card ex"><h2>1. What the grad entered</h2><p class="sub">Northwind Foods is made up.</p>'
-      + '<p class="lab">Needs</p><div class="chips" style="margin-top:0">'+ex.needs.map(function(t){return '<span class="chip need" style="padding:0 20px;cursor:default">'+esc(t)+'</span>';}).join('')+'</div>'
+      + '<p class="lab">Role, city and pay</p><div class="pbox">'+esc('Role: '+ex.role+'\nCity: '+ex.city+'\nPay: '+ex.pay)+'</div>' + '<p class="lab">Needs</p><div class="chips" style="margin-top:0">'+ex.needs.map(function(t){return '<span class="chip need" style="padding:0 20px;cursor:default">'+esc(t)+'</span>';}).join('')+'</div>'
       + '<p class="lab">Wants</p><div class="chips" style="margin-top:0">'+ex.wants.map(function(t){return '<span class="chip want" style="padding:0 20px;cursor:default">'+esc(t)+'</span>';}).join('')+'</div>'
-      + '<p class="lab">Notes from someone there</p><div class="pbox">'+esc(ex.notes)+'</div>' + '<p class="lab">Glassdoor reviews they copied</p><div class="pbox">'+esc(ex.reviews || '')+'</div></section>' + '<section class="card ex"><h2>2. The prompt it builds</h2><p class="sub">Paste this into the AI model you already use.</p><div class="pbox">'+esc(pr)+'</div></section>'
+      + '<p class="lab">Notes from someone there</p><div class="pbox">'+esc(ex.notes)+'</div>' + '<p class="lab">Review finder prompt, to find Glassdoor reviews</p><div class="pbox">'+esc(gd)+'</div>' + '<p class="lab">Glassdoor reviews they pasted in</p><div class="pbox">'+esc(ex.reviews || '')+'</div></section>' + '<section class="card ex"><h2>2. The prompt it builds</h2><p class="sub">Paste this into the AI model you already use.</p><div class="pbox">'+esc(pr)+'</div></section>'
       + '<section class="card ex"><h2>3. The needs check</h2><p class="sub">Which topics came up in the notes, and which did not.</p>'+checks+'</section>'
-      + '<section class="card ex"><h2>4. Questions to ask</h2><p class="sub">Made for the topics the notes did not cover, plus salary.</p>'+qh+'</section>' + '<section class="card ex"><h2>5. Web search prompts</h2><p class="sub">Prompts for an AI that can browse the web. The dashed spaces are blanks you fill in. Two of six are shown, and the city is left blank on purpose.</p>' + rp.map(function(p){ return '<div class="rcard" style="margin-bottom:14px"><h3>'+esc(p.k)+'</h3><p class="rtext">'+markBlanks(p.t)+'</p></div>'; }).join('') + '</section>';
+      + '<section class="card ex"><h2>4. Questions to ask</h2><p class="sub">Made for the topics the notes did not cover, plus salary.</p>'+qh+'</section>' + '<section class="card ex"><h2>5. Web search prompts</h2><p class="sub">Prompts for an AI that can browse the web. The dashed spaces are blanks you fill in. Two of six are shown.</p>' + rp.map(function(p){ return '<div class="rcard" style="margin-bottom:14px"><h3>'+esc(p.k)+'</h3><p class="rtext">'+markBlanks(p.t)+'</p></div>'; }).join('') + '</section>';
   }
   function viewFromHash(){ var h = ''; try{ h = location.hash.replace('#',''); }catch(e){} return VIEWS.indexOf(h) > -1 ? h : 'home'; }
   function renderView(){
