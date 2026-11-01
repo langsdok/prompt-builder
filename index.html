@@ -422,6 +422,7 @@ body.ex .exwrap{gap:16px}
 .stepper li::before{width:44px;height:44px}
 .stepper li::after{top:22px;left:calc(50% + 24px);right:calc(-50% + 24px)}
 }
+.gdfind{margin:14px 0}.gdfind .pbox{padding:16px 18px;font-size:15px;line-height:1.55}
 </style>
 </head>
 <body>
@@ -473,8 +474,11 @@ body.ex .exwrap{gap:16px}
   <div class="grid">
 
     <section class="panel" id="p1" aria-labelledby="t1">
-      <div><h1 id="t1" tabindex="-1">Who are you <em>checking</em>?</h1><p class="sub">Start with the company name.</p></div>
+      <div><h1 id="t1" tabindex="-1">Who are you <em>checking</em>?</h1><p class="sub">Start with the company name. Add the role, city and pay if you know them.</p></div>
       <div class="field"><label class="lab" for="company">Company name</label><input class="input" id="company" type="text" autocomplete="off" maxlength="80"></div>
+      <div class="field"><label class="lab" for="role1">Role <span class="opt">optional</span></label><input class="input" id="role1" type="text" autocomplete="off" maxlength="80"></div>
+      <div class="field"><label class="lab" for="city1">City <span class="opt">optional</span></label><input class="input" id="city1" type="text" autocomplete="off" maxlength="80"></div>
+      <div class="field"><label class="lab" for="pay1">Pay <span class="opt">optional</span></label><input class="input" id="pay1" type="text" autocomplete="off" maxlength="80"></div>
       <label class="reuse" id="reuseBox" hidden><input type="checkbox" id="reuseChk" checked><span class="box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg></span><div><b>Start with my saved list</b><span id="reuseTxt"></span></div></label>
       <div class="actions2"><button type="button" class="link" data-act="leave">Back</button><button type="button" class="btn" data-act="next">Next: needs</button></div>
     </section>
@@ -498,7 +502,7 @@ body.ex .exwrap{gap:16px}
     <section class="panel" id="p4" aria-labelledby="t4" hidden>
       <div><h1 id="t4" tabindex="-1">What did you <em>hear</em>?</h1><p class="sub">Skip if you have none.</p></div>
       <div class="field"><label class="lab" for="notes">Your notes</label><textarea class="input" id="notes" rows="6" maxlength="4000"></textarea><div><button type="button" class="link" data-act="open-library" data-kind="notes" style="padding-left:0">Need help getting started? See note starters</button></div></div>
- <div class="field"><label class="lab" for="reviews">Glassdoor reviews <span class="opt">optional</span></label><p class="hint">Open the company on Glassdoor, copy 5 to 10 recent reviews, and paste them here. Include a few good ones and a few bad ones. Glassdoor does not let tools pull reviews for you, so this part is a quick copy and paste.</p><textarea class="input" id="reviews" rows="6" maxlength="12000"></textarea><div class="gdrow"><a class="link" id="gdLink" href="https://www.glassdoor.com/Reviews/index.htm" target="_blank" rel="noopener noreferrer" style="padding-left:0">Open Glassdoor in a new tab</a></div></div>
+ <div class="field"><label class="lab" for="reviews">Glassdoor reviews <span class="opt">optional</span></label><p class="hint">Step 1: copy the review finder prompt below and paste it into your AI. Step 2: paste the reviews it finds here. Include a few good ones and a few bad ones. If your AI says it cannot reach Glassdoor, open Glassdoor yourself and copy 5 to 10 recent reviews.</p><div class="gdfind"><p class="lab" style="margin:0 0 8px">Review finder prompt</p><div class="pbox" id="gdPrompt"></div><div class="gdrow" style="margin-top:12px"><button type="button" class="btn sm" data-act="copy-gd" data-label="Copy review finder">Copy review finder</button></div></div><textarea class="input" id="reviews" rows="6" maxlength="12000"></textarea><div class="gdrow"><a class="link" id="gdLink" href="https://www.glassdoor.com/Reviews/index.htm" target="_blank" rel="noopener noreferrer" style="padding-left:0">Open Glassdoor in a new tab</a></div></div>
       <div class="actions2"><button type="button" class="link" data-act="prev">Back</button><button type="button" class="btn" data-act="next">Make my prompt</button></div>
     </section>
 
@@ -799,7 +803,7 @@ var STOP = ['clear','about','believe','options','something','where','their','the
   function normPrompt(p){
   p = p || {};
   var st = parseInt(p.step,10);
-  return { id: (typeof p.id==='string' && p.id && p.id.length<=40) ? p.id : uid(), company: typeof p.company==='string' ? p.company.slice(0,80) : '', needs: arr(p.needs).map(function(x){return x.slice(0,80);}), wants: arr(p.wants).map(function(x){return x.slice(0,80);}), notes: typeof p.notes==='string' ? p.notes.slice(0,4000) : '', reviews: typeof p.reviews==='string' ? p.reviews.slice(0,12000) : '', role: typeof p.role==='string' ? p.role.slice(0,80) : '', city: typeof p.city==='string' ? p.city.slice(0,80) : '', step: (st>=1 && st<=5) ? st : 1, done: !!p.done, created: +p.created || Date.now(), updated: +p.updated || Date.now() };
+  return { id: (typeof p.id==='string' && p.id && p.id.length<=40) ? p.id : uid(), company: typeof p.company==='string' ? p.company.slice(0,80) : '', needs: arr(p.needs).map(function(x){return x.slice(0,80);}), wants: arr(p.wants).map(function(x){return x.slice(0,80);}), notes: typeof p.notes==='string' ? p.notes.slice(0,4000) : '', reviews: typeof p.reviews==='string' ? p.reviews.slice(0,12000) : '', role: typeof p.role==='string' ? p.role.slice(0,80) : '', city: typeof p.city==='string' ? p.city.slice(0,80) : '', pay: typeof p.pay==='string' ? p.pay.slice(0,80) : '', step: (st>=1 && st<=5) ? st : 1, done: !!p.done, created: +p.created || Date.now(), updated: +p.updated || Date.now() };
 }
   function hasContent(p){ return !!(p.company.trim() || p.needs.length || p.wants.length || p.notes.trim() || (p.reviews || '').trim()); }
   function loadStore(){
@@ -929,7 +933,8 @@ function mentioned(item){
   function promptText(){
   var c = state.company.trim() || 'this company';
   var rv = (state.reviews || '').trim();
-  var t = 'You are a company research agent helping a new grad decide if '+c+' fits their values.\n\n' +
+  var det = []; if((state.role||'').trim()) det.push('ROLE: '+state.role.trim()); if((state.city||'').trim()) det.push('CITY: '+state.city.trim()); if((state.pay||'').trim()) det.push('PAY: '+state.pay.trim());
+  var t = 'You are a company research agent helping a new grad decide if '+c+' fits their values.\n\n' + (det.length ? det.join('\n')+'\n\n' : '') +
     'THEIR NEEDS (dealbreakers):\n'+numbered(state.needs)+'\n\n' +
     'THEIR WANTS:\n'+numbered(state.wants)+'\n\n' +
     'NOTES FROM SOMEONE THERE:\n'+(state.notes.trim() || 'None yet.')+'\n\n';
@@ -1191,6 +1196,7 @@ if(v==='toolkit') renderToolkit();
   }
   function syncInputs(){
     if($('company').value !== state.company) $('company').value = state.company;
+    [['role1','role'],['city1','city'],['pay1','pay']].forEach(function(f){ var el=$(f[0]); if(el && el.value !== (state[f[1]]||'')) el.value = state[f[1]]||''; });
     if($('notes').value !== state.notes) $('notes').value = state.notes; if($('reviews').value !== (state.reviews || '')) $('reviews').value = state.reviews || ''; updateGd();
     ['needs','wants'].forEach(renderChips);
   }
@@ -1306,7 +1312,7 @@ function profileText(){
 var p = ui.cur || store.prompts[0] || null;
 var n = p && p.needs && p.needs.length ? p.needs.join(', ') : '[YOUR NEEDS]';
 var w = p && p.wants && p.wants.length ? p.wants.join(', ') : '[YOUR WANTS]';
-return 'MY NEEDS PROFILE\nNeeds (dealbreakers): ' + n + '\nWants (nice to have): ' + w + '\nRole I am looking for: ' + ((p && p.role) || '[ROLE]') + '\nCity: ' + ((p && p.city) || '[CITY]');
+return 'MY NEEDS PROFILE\nNeeds (dealbreakers): ' + n + '\nWants (nice to have): ' + w + '\nRole I am looking for: ' + ((p && p.role) || '[ROLE]') + '\nCity: ' + ((p && p.city) || '[CITY]') + '\nPay I am looking for: ' + ((p && p.pay) || '[PAY]');
 }
 function quickText(){ return TK.agent + '\n\n' + profileText() + '\n\nCOMPANY TO CHECK: [TYPE A COMPANY NAME HERE, AND THE ROLE IF YOU HAVE ONE]'; }
 function tkCard(k, title, note, text){
@@ -1360,7 +1366,13 @@ function copyTk(k, btn){
 var text = k==='profile' ? profileText() : k==='quick' ? quickText() : TK[k]; var node = $('tk-'+k);
 clipWrite(text, function(){ flash(btn, 'Copied'); }, function(){ selectNode(node); flash(btn, 'Press Ctrl or Cmd + C'); });
 }
+function gdPromptText(){
+  var c = (state.company || '').trim() || 'this company';
+  var r = (state.role || '').trim(), ct = (state.city || '').trim();
+  return 'Find recent Glassdoor reviews for '+c+(r ? ', especially from people in a '+r+' role' : '')+(ct ? ' in or near '+ct : '')+'. Search the web and use only reviews you can actually see. Give me 8 to 10 from the last 2 years, a mix of positive and negative, with the date and job title of each reviewer and a link to the page. Copy each review as written, do not rewrite it. If you cannot reach Glassdoor or find enough, tell me what you could not get. Never make up a review.';
+}
 function updateGd(){
+  var g = $('gdPrompt'); if(g) g.textContent = gdPromptText();
   var a = $('gdLink'); if(!a) return;
   var c = (state.company || '').trim();
   a.href = c ? 'https://www.glassdoor.com/Search/results.htm?keyword=' + encodeURIComponent(c) : 'https://www.glassdoor.com/Reviews/index.htm';
@@ -1522,6 +1534,7 @@ function reusePrompt(src){
       var p4 = byId(id); if(!p4) return;
       clipWrite(withPrompt(p4, promptText), function(){ flash(el,'Copied'); }, function(){ openPrompt(p4, 5); });
     }
+    else if(act==='copy-gd'){ clipWrite(gdPromptText(), function(){ flash(el,'Copied'); }, function(){ selectNode($('gdPrompt')); flash(el,'Press Ctrl or Cmd + C'); }); }
     else if(act==='export'){ exportData(); }
     else if(act==='import'){ $('importFile').click(); }
     else if(act==='goprompts'){ setView('prompts', true); }
@@ -1575,6 +1588,7 @@ else if(act==='copy-research'){ copyResearch(parseInt(el.getAttribute('data-i'),
     var input = f.querySelector('input'); addItem(f.getAttribute('data-kind'), input.value); input.value=''; input.focus();
   });
   $('company').addEventListener('input', function(){ if(!ui.cur) return; state.company = this.value; save(); });
+  [['role1','role'],['city1','city'],['pay1','pay']].forEach(function(f){ $(f[0]).addEventListener('input', function(){ if(!ui.cur) return; state[f[1]] = this.value; save(); updateGd(); }); });
   $('notes').addEventListener('input', function(){ if(!ui.cur) return; state.notes = this.value; save(); });
   [].forEach.call(document.querySelectorAll('.saveNewChk'), function(c){ c.addEventListener('change', function(){ store.saveNew = this.checked; save(); renderSaved(); }); });
   $('reuseChk').addEventListener('change', function(){ ui.reuse = this.checked; });
