@@ -457,7 +457,7 @@ body.ex .exwrap{gap:16px}
   </section>
   <section class="steps" aria-labelledby="stepsTitle"><div class="wrap"><h2 id="stepsTitle">Three steps. <em>Two minutes.</em></h2><div class="cols">
     <div><div class="num" aria-hidden="true">1</div><h3>Pick your needs</h3><p>Pick from ideas or type your own.</p></div>
-    <div><div class="num" aria-hidden="true">2</div><h3>Add what you heard and read</h3><p>Add notes from someone there, plus reviews you copied.</p></div>
+    <div><div class="num" aria-hidden="true">2</div><h3>Add what you heard and read</h3><p>Add notes from someone there, plus Glassdoor reviews from our review finder prompt.</p></div>
     <div><div class="num" aria-hidden="true">3</div><h3>Copy your prompt</h3><p>Paste it into the AI you use.</p></div>
   </div></div></section>
   <section class="band" aria-label="Start"><div class="wrap"><h2>Does it <em>fit</em>? Find out.</h2><a href="#builder" class="btn" data-act="start">Start building</a></div></section>
@@ -470,13 +470,18 @@ body.ex .exwrap{gap:16px}
   <div class="grid">
 
     <section class="panel" id="p1" aria-labelledby="t1">
-      <div><h1 id="t1" tabindex="-1">Who are you <em>checking</em>?</h1><p class="sub">Start with the company name. Add the role, city and pay if you know them.</p></div>
+      <div><h1 id="t1" tabindex="-1">Who are you <em>checking</em>?</h1><p class="sub">Start with the company name.</p></div>
       <div class="field"><label class="lab" for="company">Company name</label><input class="input" id="company" type="text" autocomplete="off" maxlength="80"></div>
-      <div class="field"><label class="lab" for="role1">Role <span class="opt">optional</span></label><input class="input" id="role1" type="text" autocomplete="off" maxlength="80"></div>
-      <div class="field"><label class="lab" for="city1">City <span class="opt">optional</span></label><input class="input" id="city1" type="text" autocomplete="off" maxlength="80"></div>
-      <div class="field"><label class="lab" for="pay1">Pay <span class="opt">optional</span></label><input class="input" id="pay1" type="text" autocomplete="off" maxlength="80"></div>
       <label class="reuse" id="reuseBox" hidden><input type="checkbox" id="reuseChk" checked><span class="box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg></span><div><b>Start with my saved list</b><span id="reuseTxt"></span></div></label>
-      <div class="actions2"><button type="button" class="link" data-act="leave">Back</button><button type="button" class="btn" data-act="next">Next: needs</button></div>
+      <div class="actions2"><button type="button" class="link" data-act="leave">Back</button><button type="button" class="btn" data-act="next">Next: job details</button></div>
+    </section>
+
+    <section class="panel" id="pR" aria-labelledby="tR" hidden>
+      <div><h1 id="tR" tabindex="-1">About the <em>job</em></h1><p class="sub">Add what you know. Leave any box blank if you do not have it yet.</p></div>
+      <div class="field"><label class="lab" for="role1">Role</label><input class="input" id="role1" type="text" autocomplete="off" maxlength="80"></div>
+      <div class="field"><label class="lab" for="city1">City</label><input class="input" id="city1" type="text" autocomplete="off" maxlength="80"></div>
+      <div class="field"><label class="lab" for="pay1">Pay</label><input class="input" id="pay1" type="text" autocomplete="off" maxlength="80"></div>
+      <div class="actions2"><button type="button" class="link" data-act="prev">Back</button><button type="button" class="btn" data-act="next">Next: needs</button></div>
     </section>
 
     <section class="panel" id="p2" aria-labelledby="t2" hidden>
@@ -790,7 +795,8 @@ var STOP = ['clear','about','believe','options','something','where','their','the
   var CHECK = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
   var XICON = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
   var WARN = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3v6M8 12.2v.1"/></svg>';
-  var STEPS = ['Company','Needs','Wants','Notes','Prompt'];
+  var STEPS = ['Company','Job','Needs','Wants','Notes','Prompt'];
+  var PANELS = ['p1','pR','p2','p3','p4','p5'];
   var VIEWS = ['home','builder','prompts','ideas','example','toolkit'];
   var TITLES = {home:'Beyond the Paycheck Prompt Builder', builder:'Builder | Beyond the Paycheck', prompts:'My prompts | Beyond the Paycheck', ideas:'Ideas library | Beyond the Paycheck', example:'Example | Beyond the Paycheck', toolkit:'Toolkit | Beyond the Paycheck'};
 
@@ -799,7 +805,7 @@ var STOP = ['clear','about','believe','options','something','where','their','the
   function normPrompt(p){
   p = p || {};
   var st = parseInt(p.step,10);
-  return { id: (typeof p.id==='string' && p.id && p.id.length<=40) ? p.id : uid(), company: typeof p.company==='string' ? p.company.slice(0,80) : '', needs: arr(p.needs).map(function(x){return x.slice(0,80);}), wants: arr(p.wants).map(function(x){return x.slice(0,80);}), notes: typeof p.notes==='string' ? p.notes.slice(0,4000) : '', reviews: typeof p.reviews==='string' ? p.reviews.slice(0,12000) : '', role: typeof p.role==='string' ? p.role.slice(0,80) : '', city: typeof p.city==='string' ? p.city.slice(0,80) : '', pay: typeof p.pay==='string' ? p.pay.slice(0,80) : '', step: (st>=1 && st<=5) ? st : 1, done: !!p.done, created: +p.created || Date.now(), updated: +p.updated || Date.now() };
+  return { id: (typeof p.id==='string' && p.id && p.id.length<=40) ? p.id : uid(), company: typeof p.company==='string' ? p.company.slice(0,80) : '', needs: arr(p.needs).map(function(x){return x.slice(0,80);}), wants: arr(p.wants).map(function(x){return x.slice(0,80);}), notes: typeof p.notes==='string' ? p.notes.slice(0,4000) : '', reviews: typeof p.reviews==='string' ? p.reviews.slice(0,12000) : '', role: typeof p.role==='string' ? p.role.slice(0,80) : '', city: typeof p.city==='string' ? p.city.slice(0,80) : '', pay: typeof p.pay==='string' ? p.pay.slice(0,80) : '', step: (st>=1 && st<=6) ? st : 1, done: !!p.done, created: +p.created || Date.now(), updated: +p.updated || Date.now() };
 }
   function hasContent(p){ return !!(p.company.trim() || p.needs.length || p.wants.length || p.notes.trim() || (p.reviews || '').trim()); }
   function loadStore(){
@@ -822,7 +828,7 @@ var STOP = ['clear','about','believe','options','something','where','their','the
           out.saveNew = o1.saveNew !== false;
           var p1 = normPrompt({company:o1.company, needs:o1.needs, wants:o1.wants, notes:o1.notes});
           if(!o1.example && hasContent(p1)){
-            p1.step = p1.notes.trim() ? 4 : (p1.wants.length ? 3 : (p1.needs.length ? 2 : 1));
+            p1.step = p1.notes.trim() ? 5 : (p1.wants.length ? 4 : (p1.needs.length ? 3 : 1));
             out.prompts.push(p1);
           }
         }
@@ -991,7 +997,7 @@ function mentioned(item){
   }
   function renderStepper(){
     var p = ui.cur, html = '';
-    for(var i=1;i<=5;i++){
+    for(var i=1;i<=6;i++){
       var now = i===ui.step, done = i < ui.step, reach = !now && !done && i <= p.step;
       var cls = now ? 'now' : done ? 'done' : reach ? 'reach' : '';
       var click = (done || reach);
@@ -1001,7 +1007,7 @@ function mentioned(item){
         + '<span class="lbl">'+STEPS[i-1]+'</span></li>';
     }
     $('stepper').innerHTML = html;
-    $('stepper').setAttribute('aria-label', 'Progress, step '+ui.step+' of 5');
+    $('stepper').setAttribute('aria-label', 'Progress, step '+ui.step+' of 6');
   }
   function renderReuse(){
     var box = $('reuseBox'), src = reuseSource();
@@ -1013,11 +1019,11 @@ function mentioned(item){
     }
   }
   function renderSteps(){
-    for(var i=1;i<=5;i++) $('p'+i).hidden = i !== ui.step;
-    $('resultAside').hidden = ui.step !== 5;
+    for(var i=1;i<=6;i++) $(PANELS[i-1]).hidden = i !== ui.step;
+    $('resultAside').hidden = ui.step !== 6;
     renderStepper(); renderReuse();
-    if(ui.step===2 || ui.step===3) renderSaved();
-    if(ui.step===5) renderResult();
+    if(ui.step===3 || ui.step===4) renderSaved();
+    if(ui.step===6) renderResult();
   }
   function outBodyHtml(){
   var g = gaps(), total = g.needs.length + g.wants.length, html = '', ev = evLabel();
@@ -1090,7 +1096,7 @@ function mentioned(item){
   function hasAny(){ return state.needs.length || state.wants.length; }
   function pcardHtml(p){
     var prog = !p.done, id = esc(p.id), nm = esc(pname(p)), m = missing(p);
-    var meta = prog ? '<span class="stat p">Step '+p.step+' of 5</span>Edited '+ago(p.updated)
+    var meta = prog ? '<span class="stat p">Step '+p.step+' of 6</span>Edited '+ago(p.updated)
                     : '<span class="stat">Finished</span>'+plural(p.needs.length,'need')+', '+plural(p.wants.length,'want')+'. '+cap(ago(p.updated));
     var todo = (prog && m.length) ? '<div class="todo"><span class="l">Still needed</span>'+m.map(function(x){return '<span class="tc n">'+x+'</span>';}).join('')+'</div>' : '';
     var acts = prog
@@ -1117,7 +1123,7 @@ function mentioned(item){
     var p = latestInProgress(), box = $('resumeWrap');
     if(!p){ box.hidden = true; box.innerHTML = ''; return; }
     box.hidden = false;
-    box.innerHTML = '<div class="resume"><div><b>Pick up where you left off</b><span>'+esc(pname(p))+'. Step '+p.step+' of 5.</span></div><button type="button" class="btn sm" data-act="open" data-id="'+esc(p.id)+'">Continue</button></div>';
+    box.innerHTML = '<div class="resume"><div><b>Pick up where you left off</b><span>'+esc(pname(p))+'. Step '+p.step+' of 6.</span></div><button type="button" class="btn sm" data-act="open" data-id="'+esc(p.id)+'">Continue</button></div>';
   }
   function renderToast(){
     var t = $('toast');
@@ -1199,7 +1205,7 @@ if(v==='toolkit') renderToolkit();
   function ensureCur(){
     if(ui.cur) return;
     var p = latestInProgress();
-    if(p){ setCur(p); ui.step = Math.min(p.step, 4); }
+    if(p){ setCur(p); ui.step = Math.min(p.step, 5); }
     else newBlank();
   }
   function setView(v, focusTitle){
@@ -1209,7 +1215,7 @@ if(v==='toolkit') renderToolkit();
     if(focusTitle) focusHeading(v);
   }
   function focusHeading(v){
-    var id = v==='ideas' ? 'ideasTitle' : v==='prompts' ? 'promptsTitle' : v==='example' ? 'exampleTitle' : v==='toolkit' ? 'toolkitTitle' : v==='home' ? 'homeTitle' : 't'+ui.step;
+    var id = v==='ideas' ? 'ideasTitle' : v==='prompts' ? 'promptsTitle' : v==='example' ? 'exampleTitle' : v==='toolkit' ? 'toolkitTitle' : v==='home' ? 'homeTitle' : 't'+PANELS[ui.step-1].slice(1);
     var el = $(id); if(el) el.focus({preventScroll:true});
   }
   var keyboard = false;
@@ -1223,7 +1229,7 @@ if(v==='toolkit') renderToolkit();
   }
   function say(msg){ $('live').textContent = ''; setTimeout(function(){ $('live').textContent = msg; }, 30); }
   function refresh(){
-    if(ui.view==='builder'){ ['needs','wants'].forEach(renderChips); if(ui.step===2||ui.step===3) renderSaved(); if(ui.step===5) renderResult(); renderReuse(); }
+    if(ui.view==='builder'){ ['needs','wants'].forEach(renderChips); if(ui.step===3||ui.step===4) renderSaved(); if(ui.step===6) renderResult(); renderReuse(); }
     if(ui.view==='ideas') renderLibrary();
   }
   function update(act, kind, text){
@@ -1411,7 +1417,7 @@ function addItem(kind, text){
   function byId(id){ for(var i=0;i<store.prompts.length;i++) if(store.prompts[i].id===id) return store.prompts[i]; return null; }
   function openPrompt(p, step){
     setCur(p);
-    ui.step = step || (p.done ? 5 : Math.min(p.step,4));
+    ui.step = step || (p.done ? 6 : Math.min(p.step,5));
     ui.out = 'prompt'; $('copiedMsg').innerHTML = '';
     setView('builder', true);
   }
@@ -1420,13 +1426,13 @@ function addItem(kind, text){
     setView('builder', true);
   }
   function goStep(n){
-    if(n < 1 || n > 5) return;
+    if(n < 1 || n > 6) return;
 var gt = $('gate'); if(gt) gt.remove();
     var p = ui.cur;
     ui.step = n;
     if(n > p.step) p.step = n;
-    if(n === 5) p.done = true;
-    if(n === 5) ui.out = 'prompt';
+    if(n === 6) p.done = true;
+    if(n === 6) ui.out = 'prompt';
     $('copiedMsg').innerHTML = '';
     save(); renderSteps(); syncInputs(); window.scrollTo(0,0); focusHeading('builder');
   }
@@ -1436,7 +1442,7 @@ var gt = $('gate'); if(gt) gt.remove();
       var src = reuseSource();
       if(src){ p.needs = src.needs.slice(); p.wants = src.wants.slice(); }
     }
-    if(ui.step===4 && !p.needs.length && !p.wants.length){ showGate('Add at least one need or want first, so your prompt has something to check.'); return; }
+    if(ui.step===5 && !p.needs.length && !p.wants.length){ showGate('Add at least one need or want first, so your prompt has something to check.'); return; }
 goStep(ui.step + 1);
 }
 function showGate(msg){
@@ -1528,7 +1534,7 @@ function reusePrompt(src){
       if(ui.menuId){ var first = document.querySelector('.menuwrap .menu:not([hidden]) button'); if(first && keyboard) first.focus(); } }
     else if(act==='copy-card'){
       var p4 = byId(id); if(!p4) return;
-      clipWrite(withPrompt(p4, promptText), function(){ flash(el,'Copied'); }, function(){ openPrompt(p4, 5); });
+      clipWrite(withPrompt(p4, promptText), function(){ flash(el,'Copied'); }, function(){ openPrompt(p4, 6); });
     }
     else if(act==='copy-gd'){ clipWrite(gdPromptText(), function(){ flash(el,'Copied'); }, function(){ selectNode($('gdPrompt')); flash(el,'Press Ctrl or Cmd + C'); }); }
     else if(act==='export'){ exportData(); }
@@ -1536,9 +1542,9 @@ function reusePrompt(src){
     else if(act==='goprompts'){ setView('prompts', true); }
     else if(act==='leave'){ setView(store.prompts.length ? 'prompts' : 'home', true); }
     else if(act==='prev'){ goStep(ui.step - 1); }
-else if(act==='gotoneeds'){ goStep(2); }
+else if(act==='gotoneeds'){ goStep(3); }
     else if(act==='next'){ nextStep(); }
-    else if(act==='edit'){ goStep(2); }
+    else if(act==='edit'){ goStep(3); }
     else if(act==='subtab'){ ui.sub[kind] = el.getAttribute('data-tab'); renderSaved(); if(keyboard) $('st-'+kind+'-'+ui.sub[kind]).focus(); }
     else if(act==='idea'){ addItem(kind, text, 'idea'); }
     else if(act==='remove'){ removeFrom(state[kind], text); update('remove', kind, text); say('Removed '+text); }
