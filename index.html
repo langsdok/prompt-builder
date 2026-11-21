@@ -520,8 +520,8 @@ body.ex .exwrap{gap:16px}
       <div><span class="tag">All set</span><h1 id="t5" tabindex="-1" style="margin-top:16px">Here's your <em>prompt</em>.</h1><p class="sub">Copy your prompt, paste it into your AI, then use the tabs below to see what is covered and what to ask.</p></div>
       <div class="tabs" role="tablist" aria-label="Results">
         <button type="button" class="tab" role="tab" id="otab-prompt" data-out="prompt" aria-controls="outBody">Your prompt</button>
-        <button type="button" class="tab" role="tab" id="otab-check" data-out="check" aria-controls="outBody">What's covered<span class="badge" id="gapBadge" hidden></span></button>
-        <button type="button" class="tab" role="tab" id="otab-questions" data-out="questions" aria-controls="outBody">Questions to ask</button>
+        <button type="button" class="tab" role="tab" id="otab-check" data-out="check" aria-controls="outBody">Notes check<span class="badge" id="gapBadge" hidden></span></button>
+        <button type="button" class="tab" role="tab" id="otab-questions" data-out="questions" aria-controls="outBody">Interview questions</button>
  <button type="button" class="tab" role="tab" id="otab-research" data-out="research" aria-controls="outBody">Extra research</button>
       </div>
       <p class="tabhelp" id="tabHelp"></p>
@@ -1719,7 +1719,7 @@ body.lib-drawer .lib-x{display:block;position:sticky;top:0;z-index:2;margin:14px
   },true);
   window.addEventListener("hashchange",function(){ setTimeout(sync,80); });
   document.addEventListener("keydown",function(e){ if(e.key==="Escape" && document.body.classList.contains("lib-drawer")) closeLib(); });
-  var HELP={prompt:"Copy this and paste it into your AI. It already has your needs, wants and notes in it.",check:"This shows which of your needs and wants your notes already cover. Anything marked Not in your notes yet is worth asking about.",questions:"Questions to ask the company, starting with what you could not confirm.",research:"Optional extra prompts for an AI that can search the web. They look up news, stability and how the company acts on its values. Copy any that help."};
+  var HELP={prompt:"Copy this and paste it into your AI. It already has your needs, wants and notes in it.",check:"This shows which of your needs and wants your notes already cover. Anything marked Not in your notes yet is worth asking about.",questions:"Questions to ask in your interview, starting with what you could not confirm.",research:"Optional extra prompts for an AI that can search the web. They look up news, stability and how the company acts on its values. Copy any that help."};
   function helpSync(){ var sel=document.querySelector('[data-out][aria-selected="true"]'); var h=document.getElementById("tabHelp"); if(!h||!sel) return; var txt=HELP[sel.getAttribute("data-out")]||""; if(h.textContent!==txt) h.textContent=txt; }
   var p5=document.getElementById("p5"); if(p5){ new MutationObserver(helpSync).observe(p5,{subtree:true,attributes:true,attributeFilter:["aria-selected"],childList:true}); helpSync(); }
 })();</script></body>
