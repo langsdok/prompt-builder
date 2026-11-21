@@ -434,9 +434,9 @@ body.ex .exwrap{gap:16px}
     <nav class="nav" aria-label="Pages">
       <a href="#example" data-view="example" id="nav-example">Example</a>
       <a href="#builder" data-view="builder" id="nav-builder">Builder</a>
-      <a href="#ideas" data-view="ideas" id="nav-ideas">Ideas library</a>
+      <a href="#ideas" data-view="ideas" id="nav-ideas" style="display:none">Ideas library</a>
 <a href="#toolkit" data-view="toolkit" id="nav-toolkit">Toolkit</a>
-      <a href="#prompts" data-view="prompts" id="nav-prompts" class="mp">My prompts</a>
+      <a href="#prompts" data-view="prompts" id="nav-prompts" style="display:none" class="mp">My prompts</a>
       <a href="#builder" class="cta" id="nav-cta" data-act="start">Start building</a>
     </nav>
   </div>
@@ -451,7 +451,7 @@ body.ex .exwrap{gap:16px}
     <div>
       <span class="tag">Free. No sign up. For internships and first jobs.</span>
       <h1 id="homeTitle" tabindex="-1">Find work that <em>fits</em> who you are.</h1>
-      <p class="lead">Check any company against what you need, whether it is an internship or your first job.</p>
+      <p class="lead">Already have a company in mind? Check it against what you need, for an internship or your first job. This is not a job board.</p>
       <div class="actions"><a href="#builder" class="btn" data-act="start">Start building</a><a href="#example" class="link" data-view="example">See an example</a></div>
     </div>
     <div class="art" aria-hidden="true"><div class="stack">
@@ -466,7 +466,6 @@ body.ex .exwrap{gap:16px}
     <div><div class="num" aria-hidden="true">3</div><h3>Add what you heard and read</h3><p>Add notes from someone there, plus Glassdoor reviews from our review finder prompt.</p></div>
     <div><div class="num" aria-hidden="true">4</div><h3>Copy your prompt</h3><p>Paste it into the AI you use. You get a check on each need and questions to ask in the interview.</p></div>
   </div>
-  <div class="ways"><div class="way"><h3>The builder</h3><p>Guided and quick. Answer a few short questions and it saves your list on this device.</p><a href="#builder" class="link">Start the builder</a></div><div class="way"><h3>The toolkit</h3><p>Set up your own job fit agent in an AI you already use, then check any company in a minute.</p><a href="#toolkit" class="link">Open the toolkit</a></div></div>
   <div class="who"><h3>Who it is for</h3><p>Anyone deciding if a company is worth applying to or saying yes to, for an internship or a first full time job. Work that fits means something different for everyone, like helping people, pay, flexibility or growth. You decide what matters, and the tool checks the company against it.</p></div></div></section>
   <section class="band" aria-label="Start"><div class="wrap"><h2>Does it <em>fit</em>? Find out.</h2><a href="#builder" class="btn" data-act="start">Start building</a></div></section>
 </div>
@@ -474,7 +473,7 @@ body.ex .exwrap{gap:16px}
 <!-- BUILDER -->
 <div id="viewBuilder" class="wrap page" hidden>
   <ol class="stepper" id="stepper" aria-label="Progress"></ol>
-  <div class="autosave" role="status"><i aria-hidden="true"></i>Saved automatically</div>
+  <div class="autosave" role="status"><i aria-hidden="true"></i>Saved automatically <a href="#prompts" class="link" style="margin-left:14px">My prompts</a></div>
   <div class="grid">
 
     <section class="panel" id="p1" aria-labelledby="t1">
@@ -525,7 +524,7 @@ body.ex .exwrap{gap:16px}
  <button type="button" class="tab" role="tab" id="otab-research" data-out="research" aria-controls="outBody">Web search</button>
       </div>
       <div id="outBody" role="tabpanel"></div>
-      <div class="actions2" id="outActions"></div>
+      <div class="actions2" id="outActions"></div><div class="ainext"><p class="ainext-t">Next: paste it into your AI</p><div class="ainext-btns"><a href="https://claude.ai/new" target="_blank" rel="noopener">Open Claude</a><a href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT</a><a href="https://gemini.google.com/app" target="_blank" rel="noopener">Open Gemini</a></div><p class="ainext-s">Turn web search on, paste, and send. It runs in your own AI, so this tool stays free and your prompts stay on your device.</p></div>
       <div class="copied" id="copiedMsg" role="status" aria-live="polite"></div>
     </section>
 
@@ -1353,7 +1352,7 @@ $('toolkitBody').innerHTML = '<div class="tkwrap">'
 + '</div></section>'
 + '<section class="card"><h2>Got a specific <em>job posting</em>?</h2><p class="sub">Paste the posting into this prompt. LinkedIn blocks AI tools from opening job pages, so copy the text instead of sending the link.</p><div class="tkgrid" style="grid-template-columns:1fr;margin-top:14px">'+tkCard('job','Job posting check','Replace the blank, then paste it into your agent.',TK.job)+'</div></section>'
 + '<section class="card"><span class="tag">Second agent</span><h2 style="margin-top:14px">Get ready for the <em>interview</em></h2><p class="sub">A second agent that coaches you. It lists the questions you will likely get, the questions to ask them, then practices with you one question at a time.</p><div class="tkgrid" style="grid-template-columns:1fr;margin-top:14px">'+tkCard('interview','Interview prep agent','Paste into a new chat or a second project, then add your needs profile and the company.',TK.interview)+'</div></section>'
-+ '<section class="card"><h2>What you get <em>back</em></h2><p class="sub">Summit Outfitters is made up, so no real company is rated. This is what the agent gives back for the needs and wants in the walkthrough, with real links and dates for a real company.</p><div class="tkex">'+exrows+'<p class="hint"><b>Could not confirm, so ask:</b> Is the $62,000 to $70,000 range for this exact team? Is the mentor program still active, and who runs it? What would I pay each month for health insurance? Also: How do people usually move up here, and how long does it take? Can I take time off in the busy season?</p></div></section>'
++ '<section class="card"><h2>What you get <em>back</em></h2><p class="sub">Northwind Foods is made up, so no real company is rated. This is what the agent gives back for the needs and wants in the example, with real links and dates for a real company.</p><div class="tkex">'+exrows+'<p class="hint"><b>Could not confirm, so ask:</b> Is the $62,000 to $70,000 range for this exact team? Is the mentor program still active, and who runs it? What would I pay each month for health insurance? Also: How do people usually move up here, and how long does it take? Can I take time off in the busy season?</p></div></section>'
 + '<section class="card"><h2>Use it at three <em>moments</em></h2><div class="tkmoms">'+moms+'</div><p class="hint" style="margin-top:14px">Check it worked: type a company you know well. You should get a verdict for each need, a confidence label, a red flags section and a list of what it could not confirm.</p></section>'
 + '<section class="card"><h2>Keep it <em>fresh</em></h2><p class="sub">Companies change. Pick how often you want to look again and add a reminder to your calendar.</p><div class="tkmoms">'+fresh+'</div>'
 + '<div class="tkfresh"><label for="tkFreq">How often<select id="tkFreq"><option value="DAILY">Daily</option><option value="WEEKLY">Weekly</option><option value="MONTHLY">Monthly</option><option value="QUARTERLY">Every 3 months</option></select></label><label for="tkCo">Company (optional)<input id="tkCo" type="text" maxlength="80" placeholder="Like Northwind Foods" autocomplete="off"></label><button type="button" class="btn sm" data-act="tk-ics">Download calendar reminder</button></div>'
@@ -1624,5 +1623,37 @@ document.addEventListener('input', function(e){ var t = e.target; if(!t || (t.id
 })();
 
 </script>
-</body>
+<style id="tidy-css">
+.tkd{background:var(--paper,#fff);border:1px solid var(--line,#d8e0ee);border-radius:20px;margin:0 0 12px;overflow:hidden}
+.tkd>summary{cursor:pointer;list-style:none;padding:18px 24px;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:22px;color:var(--ink,#102442);display:flex;justify-content:space-between;align-items:center}
+.tkd>summary::-webkit-details-marker{display:none}
+.tkd>summary::after{content:"+";color:var(--blue2,#3470CB);font-size:26px;line-height:1}
+.tkd[open]>summary::after{content:"\2212"}
+.tkd>section{margin:0;border:0;border-radius:0;box-shadow:none;border-top:1px solid var(--line,#d8e0ee)}
+.ainext{margin-top:22px;padding-top:18px;border-top:1px solid var(--line,#d8e0ee)}
+.ainext-t{margin:0 0 10px;font-weight:600;color:var(--ink,#102442)}
+.ainext-btns{display:flex;flex-wrap:wrap;gap:10px}
+.ainext-btns a{border:1.5px solid var(--blue2,#3470CB);border-radius:999px;padding:9px 18px;color:var(--ink,#102442);font-weight:600;text-decoration:none}
+.ainext-btns a:hover{background:var(--wash,#E7ECF4)}
+.ainext-s{margin:12px 0 0;font-size:15px;color:var(--ink,#102442);opacity:.8}
+</style><script id="tidy-js">
+(function(){
+  var groups=[[2,3,"Set up your own agent once"],[4,null,"Check a specific job posting"],[5,null,"Get ready for the interview"],[6,null,"See an example result"],[7,null,"When to use it"],[8,null,"Keep it fresh: recheck a company"],[9,null,"Where every number comes from"]];
+  function wrap(){
+    var body=document.getElementById("toolkitBody"); if(!body) return;
+    var w=body.querySelector(".tkwrap"); if(!w) return;
+    var secs=[].filter.call(w.children,function(c){return c.tagName==="SECTION";});
+    if(secs.length<10) return;
+    groups.forEach(function(g){
+      var first=secs[g[0]]; var d=document.createElement("details"); d.className="tkd";
+      var sm=document.createElement("summary"); sm.textContent=g[2]; d.appendChild(sm);
+      w.insertBefore(d,first); d.appendChild(first); if(g[1]!==null) d.appendChild(secs[g[1]]);
+    });
+  }
+  var pending=false;
+  function sched(){ if(pending) return; pending=true; requestAnimationFrame(function(){pending=false; wrap();}); }
+  new MutationObserver(sched).observe(document.body,{childList:true,subtree:true});
+  wrap();
+})();
+</script></body>
 </html>
