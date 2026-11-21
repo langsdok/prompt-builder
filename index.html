@@ -512,19 +512,20 @@ body.ex .exwrap{gap:16px}
     <section class="panel" id="p4" aria-labelledby="t4" hidden>
       <div><h1 id="t4" tabindex="-1">What did you <em>hear</em>?</h1><p class="sub">Skip if you have none.</p></div>
       <div class="field"><label class="lab" for="notes">Your notes</label><textarea class="input" id="notes" rows="6" maxlength="4000"></textarea><div><button type="button" class="link" data-act="open-library" data-kind="notes" style="padding-left:0">Need help getting started? See note starters</button></div></div>
- <div class="field"><label class="lab" for="reviews">Glassdoor reviews <span class="opt">optional</span></label><p class="hint">Step 1: copy the review finder prompt below and paste it into your AI. Step 2: paste the reviews it finds here. Include a few good ones and a few bad ones. If your AI says it cannot reach Glassdoor, open Glassdoor yourself and copy 5 to 10 recent reviews.</p><div class="gdfind"><p class="lab" style="margin:0 0 8px">Review finder prompt</p><div class="pbox" id="gdPrompt"></div><div class="gdrow" style="margin-top:12px"><button type="button" class="btn sm" data-act="copy-gd" data-label="Copy review finder">Copy review finder</button></div></div><textarea class="input" id="reviews" rows="6" maxlength="12000"></textarea><div class="gdrow"><a class="link" id="gdLink" href="https://www.glassdoor.com/Reviews/index.htm" target="_blank" rel="noopener noreferrer" style="padding-left:0">Open Glassdoor in a new tab</a></div></div>
+ <div class="field gdbox"><div class="gdhead"><span class="tag">Optional</span><h2 class="gdh">Add Glassdoor reviews</h2><p class="gdwhy">Reviews show what people say it is really like to work there, so your AI can compare them with the job posting.</p></div><ol class="gdsteps"><li><div class="gdn">1</div><div class="gds"><strong>Copy this prompt</strong><div class="gdfind"><div class="pbox" id="gdPrompt"></div><div class="gdrow" style="margin-top:12px"><button type="button" class="btn sm" data-act="copy-gd" data-label="Copy review finder">Copy review finder</button></div></div></div></li><li><div class="gdn">2</div><div class="gds"><strong>Paste it into your AI with web search on</strong><p class="gdp">Ask for a mix of good and bad reviews. If your AI says it cannot reach Glassdoor, open Glassdoor yourself and copy 5 to 10 recent reviews.</p><div class="gdrow"><a class="link" id="gdLink" href="https://www.glassdoor.com/Reviews/index.htm" target="_blank" rel="noopener noreferrer" style="padding-left:0">Open Glassdoor in a new tab</a></div></div></li><li><div class="gdn">3</div><div class="gds"><label class="lab" for="reviews">Paste the reviews here</label><textarea class="input" id="reviews" rows="6" maxlength="12000" placeholder="Paste a few good and a few bad reviews. Skip this if you have none."></textarea></div></li></ol></div>
       <div class="actions2"><button type="button" class="link" data-act="prev">Back</button><button type="button" class="btn" data-act="next">Make my prompt</button></div>
     </section>
 
     <section class="panel" id="p5" aria-labelledby="t5" hidden>
-      <div><span class="tag">All set</span><h1 id="t5" tabindex="-1" style="margin-top:16px">Here's your <em>prompt</em>.</h1><p class="sub">Paste it into your AI.</p></div>
+      <div><span class="tag">All set</span><h1 id="t5" tabindex="-1" style="margin-top:16px">Here's your <em>prompt</em>.</h1><p class="sub">Copy your prompt, paste it into your AI, then use the tabs below to see what is covered and what to ask.</p></div>
       <div class="tabs" role="tablist" aria-label="Results">
-        <button type="button" class="tab" role="tab" id="otab-prompt" data-out="prompt" aria-controls="outBody">Prompt</button>
-        <button type="button" class="tab" role="tab" id="otab-check" data-out="check" aria-controls="outBody">Needs check<span class="badge" id="gapBadge" hidden></span></button>
-        <button type="button" class="tab" role="tab" id="otab-questions" data-out="questions" aria-controls="outBody">Questions</button>
- <button type="button" class="tab" role="tab" id="otab-research" data-out="research" aria-controls="outBody">Web search</button>
+        <button type="button" class="tab" role="tab" id="otab-prompt" data-out="prompt" aria-controls="outBody">Your prompt</button>
+        <button type="button" class="tab" role="tab" id="otab-check" data-out="check" aria-controls="outBody">What's covered<span class="badge" id="gapBadge" hidden></span></button>
+        <button type="button" class="tab" role="tab" id="otab-questions" data-out="questions" aria-controls="outBody">Questions to ask</button>
+ <button type="button" class="tab" role="tab" id="otab-research" data-out="research" aria-controls="outBody">Extra research</button>
       </div>
-      <div id="outBody" role="tabpanel"></div>
+      <p class="tabhelp" id="tabHelp"></p>
+<div id="outBody" role="tabpanel"></div>
       <div class="actions2" id="outActions"></div><div class="ainext"><p class="ainext-t">Next: paste it into your AI</p><div class="ainext-btns"><a href="https://claude.ai/new" target="_blank" rel="noopener">Open Claude</a><a href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT</a><a href="https://gemini.google.com/app" target="_blank" rel="noopener">Open Gemini</a></div><p class="ainext-s">Turn web search on, paste, and send. It runs in your own AI, so this tool stays free and your prompts stay on your device.</p></div>
       <div class="copied" id="copiedMsg" role="status" aria-live="polite"></div>
     </section>
@@ -1653,6 +1654,26 @@ document.addEventListener('input', function(e){ var t = e.target; if(!t || (t.id
 .who{background:var(--mint,#DDEBE1);border-radius:24px;padding:30px 34px}
 .band h2 em{color:var(--sage,#9DC3AB)}
 @media(max-width:760px){.problem{padding:60px 0}.pgrid{grid-template-columns:1fr}.who{padding:24px}}
+
+.gdbox{background:var(--mint,#DDEBE1);border-radius:20px;padding:22px 24px;margin-top:8px}
+.gdbox .tag{background:#fff}
+.gdh{font-size:26px;margin:10px 0 6px}
+.gdwhy{margin:0 0 16px;font-size:16px;line-height:1.45}
+.gdsteps{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.gdsteps li{display:flex;gap:14px;background:#fff;border-radius:16px;padding:16px 18px}
+.gdn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--blue2,#3470CB);color:#fff;font-weight:700;display:grid;place-items:center}
+.gds{flex:1;min-width:0}
+.gds>strong{display:block;margin:4px 0 8px}
+.gdp{margin:0 0 8px;font-size:15px;line-height:1.45}
+.gds .input{width:100%}
+.tabhelp{margin:14px 0 8px;font-size:16px;line-height:1.5;color:var(--ink,#102442);opacity:.85}
+.lib-x{display:none}
+body.lib-drawer #viewIdeas{position:fixed;top:0;right:0;bottom:0;width:480px;max-width:100vw;overflow-y:auto;z-index:60;background:var(--cream,#F6F8FC);box-shadow:-18px 0 50px rgba(16,36,66,.18);padding:0 20px 40px}
+body.lib-drawer #viewIdeas .ideas-layout{display:flex;flex-direction:column;gap:16px;max-width:none;padding:0;margin:0}
+body.lib-drawer #viewIdeas aside.picks{order:-1;position:static;width:auto}
+body.lib-drawer #viewIdeas .lhero h1{font-size:34px}
+body.lib-drawer #viewBuilder{margin-right:480px}
+body.lib-drawer .lib-x{display:block;position:sticky;top:0;z-index:2;margin:14px 0 4px auto;border:1.5px solid var(--blue2,#3470CB);background:#fff;color:var(--ink,#102442);border-radius:999px;padding:8px 16px;font-weight:600;cursor:pointer}
 </style><script id="tidy-js">
 (function(){
   var groups=[[2,3,"Set up your own agent once"],[4,null,"Check a specific job posting"],[5,null,"Get ready for the interview"],[6,null,"See an example result"],[7,null,"When to use it"],[8,null,"Keep it fresh: recheck a company"],[9,null,"Where every number comes from"]];
@@ -1672,5 +1693,34 @@ document.addEventListener('input', function(e){ var t = e.target; if(!t || (t.id
   new MutationObserver(sched).observe(document.body,{childList:true,subtree:true});
   wrap();
 })();
-</script></body>
+</script><script id="tidy-lib">(function(){
+  var fromBuilder=false, refreshing=false;
+  function ideasEl(){return document.getElementById("viewIdeas");}
+  function builderEl(){return document.getElementById("viewBuilder");}
+  function backBtn(){return [].slice.call(ideasEl().querySelectorAll("button")).filter(function(x){return /Back to builder/.test(x.textContent);})[0];}
+  function closeLib(){ var b=backBtn(); if(b) b.click(); else location.hash="#builder"; }
+  function ensureClose(){ var lay=ideasEl().querySelector(".ideas-layout"); if(!lay||ideasEl().querySelector(".lib-x")) return; var b=document.createElement("button"); b.type="button"; b.className="lib-x"; b.textContent="Close ideas"; b.addEventListener("click",closeLib); ideasEl().insertBefore(b,lay); }
+  function sync(){
+    if(refreshing) return;
+    if(location.hash==="#ideas" && fromBuilder && window.innerWidth>=1100){ ensureClose(); document.body.classList.add("lib-drawer"); builderEl().hidden=false; }
+    else { document.body.classList.remove("lib-drawer"); if(location.hash!=="#ideas") fromBuilder=false; }
+  }
+  function refreshBuilder(){
+    if(!document.body.classList.contains("lib-drawer")||refreshing) return;
+    refreshing=true; var d=ideasEl(), y=d.scrollTop, wy=window.scrollY;
+    location.hash="#builder";
+    setTimeout(function(){ location.hash="#ideas"; setTimeout(function(){ refreshing=false; sync(); d.scrollTop=y; window.scrollTo(0,wy); },120); },40);
+  }
+  document.addEventListener("click",function(e){
+    var t=e.target; if(!t.closest) return;
+    if(t.closest('[data-act="open-library"]')){ fromBuilder=true; setTimeout(sync,80); return; }
+    if(!document.body.classList.contains("lib-drawer")) return;
+    if(t.closest("#viewIdeas") && !t.closest(".lib-x") && !t.closest("#catNav") && !t.closest("summary") && !/Back to builder/.test(t.textContent||"") && t.closest("button")) setTimeout(refreshBuilder,60);
+  },true);
+  window.addEventListener("hashchange",function(){ setTimeout(sync,80); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape" && document.body.classList.contains("lib-drawer")) closeLib(); });
+  var HELP={prompt:"Copy this and paste it into your AI. It already has your needs, wants and notes in it.",check:"This shows which of your needs and wants your notes already cover. Anything marked Not in your notes yet is worth asking about.",questions:"Questions to ask the company, starting with what you could not confirm.",research:"Optional extra prompts for an AI that can search the web. They look up news, stability and how the company acts on its values. Copy any that help."};
+  function helpSync(){ var sel=document.querySelector('[data-out][aria-selected="true"]'); var h=document.getElementById("tabHelp"); if(!h||!sel) return; var txt=HELP[sel.getAttribute("data-out")]||""; if(h.textContent!==txt) h.textContent=txt; }
+  var p5=document.getElementById("p5"); if(p5){ new MutationObserver(helpSync).observe(p5,{subtree:true,attributes:true,attributeFilter:["aria-selected"],childList:true}); helpSync(); }
+})();</script></body>
 </html>
