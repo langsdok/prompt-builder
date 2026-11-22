@@ -1703,7 +1703,7 @@ body.lib-drawer .lib-x{display:block;position:sticky;top:0;z-index:2;margin:14px
   function ensureClose(){ var lay=ideasEl().querySelector(".ideas-layout"); if(!lay||ideasEl().querySelector(".lib-x")) return; var b=document.createElement("button"); b.type="button"; b.className="lib-x"; b.textContent="Close ideas"; b.addEventListener("click",closeLib); ideasEl().insertBefore(b,lay); }
   function sync(){
     if(refreshing) return;
-    if(location.hash==="#ideas" && fromBuilder && window.innerWidth>=1100){ ensureClose(); document.body.classList.add("lib-drawer"); builderEl().hidden=false; }
+    if(false){ ensureClose(); document.body.classList.add("lib-drawer"); builderEl().hidden=false; }
     else { document.body.classList.remove("lib-drawer"); if(location.hash!=="#ideas") fromBuilder=false; }
   }
   function refreshBuilder(){
